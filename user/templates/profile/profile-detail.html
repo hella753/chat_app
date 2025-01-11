@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <div class="profile-info">
+            <h1>{{ user.username }} Profile</h1>
+            {% if not user.image %}
+                <img class="profile-picture" src="{% static 'images/profile_default.png' %}" alt="profile_picture">
+            {% else %}
+                <img class="profile-picture" src="{{ user.image.crop.250x250 }}" alt="profile_picture">
+            {% endif %}
+            <h2>🌸First Name: {{ user.first_name }}</h2>
+            <h2>🌸Last Name: {{ user.last_name }}</h2>
+            <h2>🌸Username: {{ user.username }}</h2>
+            <h2>🌸Email: {{ user.email }}</h2>
+            <button class="btn">
+                Click To Chat
+            </button>
+        </div>
+
+    </div>
+{% endblock %}

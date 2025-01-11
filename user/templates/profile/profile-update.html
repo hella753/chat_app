@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <form method="POST" action="{% url "accounts:profile_update" user.username %}" enctype="multipart/form-data"
+              class="profile-info update-container">
+            {% csrf_token %}
+            <h1>My Profile</h1>
+            {% if not request.user.image %}
+                <img class="profile-picture" src="{% static 'images/profile_default.png' %}" alt="profile_picture">
+            {% else %}
+                <img class="profile-picture" src="{{ request.user.image.crop.250x250 }}" alt="profile_picture">
+            {% endif %}
+            <div class="container-file-upload">
+                <div>
+                    <input class="file-input" type="file" name="image"/>
+                </div>
+            </div>
+            <div>
+                <div class="inline-element-container">
+                    <div class="inline-element">
+
+                        <label for="first_name">
+                            <h2>First Name:</h2>
+                            <input class="update-profile-input" type="text" name="first_name"
+                                   value="{{ request.user.first_name }}">
+                        </label>
+                    </div>
+                    <div class="inline-element">
+
+                        <label>
+                            <h2>Last Name:</h2>
+                            <input class="update-profile-input" type="text" name="last_name"
+                                   value="{{ request.user.last_name }}">
+                        </label>
+                    </div>
+                </div>
+                <div class="inline-element-container">
+                    <div class="inline-element">
+                        <label>
+                            <h2>Username:</h2>
+                            <input class="update-profile-input" type="text" name="username"
+                                   value="{{ request.user.username }}">
+                        </label>
+                        {% if form.username.errors %}
+                            <div class="error-message">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="inline-element">
+                        <label>
+                            <h2>Email:</h2>
+                            <input class="update-profile-input" type="email" name="email"
+                                   value="{{ request.user.email }}">
+                        </label>
+                        {% if form.email.errors %}
+                            <div class="error-message">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+                <a class="go-back" href="{% url "accounts:profile" %}">Go Back</a>
+                <button type="submit" class="btn edit-button">Save Changes</button>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

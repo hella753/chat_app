@@ -1,0 +1,9 @@
+.env
+db.sqlite3
+chat
+__pycache__
+user/__pycache__
+user/migrations/__pycache__/
+chat_application/__pycache__/
+.venv/
+.idea/

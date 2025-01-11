@@ -1,0 +1,134 @@
+:root {
+    --pink: #FFCFCF;
+    --cream: #FFFDEC;
+    --light-green: #86A788;
+    --light-pink: #FFE2E2;
+    --dark-green: #4B5945;
+}
+
+.navbar {
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background-color: var(--pink);
+    color: var(--cream);
+    margin-bottom: 2%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.btn-logout:hover img {
+    filter: invert(0.5);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.btn-logout img {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-container {
+    width: 100%;
+    margin-left: 2%;
+    display: flex;
+    align-items: center;
+    gap: 1%;
+}
+
+.btn-search {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-search img {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+input{
+    width: 20%;
+    padding: 1%;
+    font-size: large;
+    background-color: var(--cream);
+    color: var(--dark-green);
+    font-family: "Montserrat", sans-serif;
+    border: none;
+    border-radius: 2%;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: var(--cream);
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--light-green);
+}
+
+/* Responsive Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 0.3rem;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: #333;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}

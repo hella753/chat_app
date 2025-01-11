@@ -1,0 +1,20 @@
+{% extends "base-for-authorization.html" %}
+{% load static %}
+
+{% block title %}Verify Email{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'styles/reset-password.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="reset-password-container">
+        <div class="reset">
+            <h2>Check your Email</h2>
+            <p>An email has been sent with instructions to verify your account.</p>
+            <a href="{% url 'accounts:login' %}">Back to login</a>
+        </div>
+    </div>
+
+{% endblock %}

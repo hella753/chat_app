@@ -1,0 +1,29 @@
+{% load static %}
+
+<nav class="navbar">
+    <div class="logo">MyLogo</div>
+    <form class="search-container" method="GET" action=".">
+            <input type="text" name="username" placeholder="Search User To Start A Chat">
+            <button type="submit" class="btn-search">
+                <img src="{% static "images/search.png" %}">
+            </button>
+    </form>
+
+    <form method="POST" action="{% url "accounts:logout" %}">
+        {% csrf_token %}
+        <ul class="nav-links">
+            <li><a href="{% url "accounts:profile" %}">Profile</a></li>
+            <li><a href="#">Chats</a></li>
+            <li>
+                <button class="btn-logout" type="submit">
+                    <img src="{% static "images/logout-white.png" %}">
+                </button>
+            </li>
+        </ul>
+    </form>
+    <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>

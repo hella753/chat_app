@@ -1,0 +1,119 @@
+:root {
+    --pink: #FFCFCF;
+    --cream: #FFFDEC;
+    --light-green: #86A788;
+    --light-pink: #FFE2E2;
+    --dark-green: #4B5945;
+}
+
+h1 {
+    color: var(--pink);
+}
+
+body {
+    background-color: floralwhite;
+    font-family: Montserrat, sans-serif;
+    color: var(--light-green);
+    margin: 0;
+    padding: 0;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.register {
+    width: 30%;
+    margin: auto;
+    background-color: var(--cream);
+    border-radius: 5%;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.form-element {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: large;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: large;
+    color: var(--dark-green);
+    font-family: "Montserrat", sans-serif;
+    border: 1px solid floralwhite;
+    border-radius: 5px;
+    background-color: var(--light-pink);
+    box-sizing: border-box;
+}
+
+button {
+    width: 90%;
+    padding: 10px;
+    font-size: large;
+    margin: auto;
+    color: var(--cream);
+    background-color: var(--pink);
+    border: none;
+    border-radius: 5px;
+    font-family: Montserrat, sans-serif;
+    text-align: center;
+}
+
+.button-div {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+button:hover {
+    background-color: var(--light-green);
+    color: var(--cream);
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: var(--light-green);
+}
+
+a:hover {
+    color: var(--dark-green);
+}
+
+.error-message {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: var(--dark-green);
+}
+
+.register-info {
+    margin-top: 20px;
+    color: var(--light-green);
+    text-align: center;
+}
+
+.inline-element-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.inline-element {
+}
+
+#first_name, #last_name, #password1, #password2 {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid var(--light-pink);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
