@@ -1,0 +1,44 @@
+@import "variables.css";
+
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: var(--pink);
+    font-family: "Montserrat", sans-serif;
+    font-size: 7rem;
+    margin: auto;
+}
+
+body {
+    margin: 0;
+}
+
+.block-element {
+    display: block;
+}
+
+.text {
+    font-family: "Montserrat", sans-serif;
+    font-size: 2rem;
+    color: var(--pink);
+    margin: auto;
+}
+
+.handler-container {
+    height: 70vh;
+    margin-top: 7%;
+}
+
+.link-go-back {
+    margin-right: 3%;
+    color: var(--light-green);
+    text-decoration: none;
+}
+
+.link-go-back:hover {
+    color: var(--dark-green);
+}

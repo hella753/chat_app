@@ -54,6 +54,7 @@ class RegisterView(CreateView):
         return redirect(self.success_url)
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileDetailView(SearchMixIn, DetailView):
     """
     This view is used to display the profile of a user.
@@ -78,6 +79,7 @@ class ProfileUpdateView(SearchMixIn, UpdateView):
     form_class = ProfileUpdateForm
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileUpdatePasswordView(SearchMixIn, UpdateView):
     """
     This view is used to update the password of the logged-in user.
@@ -118,3 +120,17 @@ class VerificationView(View):
                 request,
                 'authorization/activation-failed.html'
             )
+
+
+class PageNotFound(TemplateView):
+    """
+    This view is used to display the 404 page.
+    """
+    template_name = '404.html'
+
+
+class InternalServerError(TemplateView):
+    """
+    This view is used to display the 500 page.
+    """
+    template_name = '500.html'

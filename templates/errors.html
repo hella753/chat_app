@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Something Went Wrong{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static "styles/navbar.css" %}">
+    <link rel="stylesheet" href="{% static "styles/footer.css" %}">
+    <link rel="stylesheet" href="{% static "styles/errors.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div class="handler-container">
+        <div class="error-container">
+            <div>
+                <h1>{% block error-code %} {% endblock %}</h1>
+            </div>
+        </div>
+        <div class="error-container">
+            <div>
+                <h1>{% block error-name %} {% endblock %}</h1>
+            </div>
+        </div>
+        <div class="error-container">
+            <div class="text">
+                <p>{% block error-text %} {% endblock %}.</p>
+            </div>
+        </div>
+        <div class="error-container">
+            <a class="link-go-back" href="{% url "accounts:profile" %}">Go back to your profile</a>
+        </div>
+    </div>
+{% endblock %}
