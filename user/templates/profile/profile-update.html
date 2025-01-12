@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'navbar.html' %}
     <div class="profile-container">
         <form method="POST" action="{% url "accounts:profile_update" user.username %}" enctype="multipart/form-data"
               class="profile-info update-container">
