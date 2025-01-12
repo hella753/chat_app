@@ -3,6 +3,12 @@
 
 {% block title %}{{ user.username }}'s Profile{% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static "styles/profile.css" %}">
+    <link rel="stylesheet" href="{% static "styles/navbar.css" %}">
+    <link rel="stylesheet" href="{% static "styles/footer.css" %}">
+{% endblock %}
+
 {% block content %}
     <div class="profile-container">
         <div class="profile-info">
