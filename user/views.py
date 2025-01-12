@@ -1,9 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -12,6 +10,7 @@ from django.views.generic import TemplateView, CreateView, DetailView, UpdateVie
 from mixins.search_mixin import SearchMixIn
 from user.forms import RegistrationForm, UpdatePasswordForm, ProfileUpdateForm
 from user.models import User
+from user.tasks import send_verification_email
 from user.utils.activation_token_generator import account_activation_token
 
 
@@ -40,17 +39,7 @@ class RegisterView(CreateView):
         user.is_active = False
         user.save()
         current_site = get_current_site(self.request)
-        mail_subject = 'Activate your account'
-        message = render_to_string('authorization/verification-email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': user.pk,
-            'token': account_activation_token.make_token(user),
-        })
-        to_email = form.cleaned_data.get('email')
-        email = EmailMessage(mail_subject, message, to=[to_email])
-        email.content_subtype = 'html'
-        email.send()
+        send_verification_email.delay(user, current_site, form)
         return redirect(self.success_url)
 
 
