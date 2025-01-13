@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'user',
     'chat',
     'versatileimagefield',
+    'celery',
+    'django_celery_results',
 
 ]
 
@@ -83,14 +86,20 @@ TEMPLATES = [
 # WSGI_APPLICATION = 'chat_application.wsgi.application'
 ASGI_APPLICATION = "chat_application.asgi.application"
 
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6380)],
+#         },
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -100,7 +109,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
         "TEST": {
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": BASE_DIR / "testdb.sqlite3",
         },
     }
 }

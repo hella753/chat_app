@@ -1,6 +1,6 @@
-@import './variables.css';
+@import '../variables.css';
 
-h2 {
+h1 {
     color: var(--pink);
 }
 
@@ -10,20 +10,26 @@ body{
     color: var(--light-green);
 }
 
-.reset-password-container{
+.login-container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.reset{
+.login{
     width: 20%;
     margin: auto;
     background-color: var(--cream);
     border-radius: 5%;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     padding: 3%;
+}
+
+.form-element{
+    margin: 3%;
+    font-size: large;
+    display: flex;
 }
 
 input {
@@ -37,35 +43,26 @@ input {
     background-color: var(--light-pink);
     box-sizing: border-box;
 }
-
 button{
-    width: 60%;
-    padding: 4.5%;
+    width: 90%;
+    padding: 5%;
     font-size: large;
     margin: auto;
+    color: var(--cream);
     background-color: var(--pink);
     border: none;
     border-radius: 5px;
-    color: var(--cream);
     font-family: Montserrat, sans-serif;
 }
 
 .button-div{
     margin-top: 10%;
-    display: flex;
-    margin-bottom: 10%;
 }
 
 .btn:hover{
     background-color: var(--light-green);
     color: var(--cream);
     cursor: pointer;
-}
-
-.form-element{
-    margin: 3%;
-    font-size: large;
-    display: flex;
 }
 
 a {
@@ -77,11 +74,17 @@ a:hover {
     color: var(--dark-green);
 }
 
-h2 {
-    margin-bottom: 10%;
+.error-message {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    color: var(--dark-green);
 }
 
-p {
-    margin-bottom: 10%;
+.logout-div {
+    display: flex;
+}
+
+.register-info {
     margin-top: 10%;
+    color: var(--light-green);
 }

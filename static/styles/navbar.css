@@ -18,10 +18,32 @@
     filter: invert(0.5);
 }
 
+.btn-new-message {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-new-message img {
+    filter: invert(1);
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
+.btn-new-message:hover img {
+    filter: invert(0.5);
+}
+
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
 }
+
 .btn-logout img {
     height: 24px;
     width: 24px;
@@ -68,7 +90,7 @@
     gap: 2rem;
 }
 
-input{
+input {
     width: 20%;
     padding: 1%;
     font-size: large;
