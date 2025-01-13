@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Chat Room{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "styles/navbar.css" %}">
+    <link rel="stylesheet" href="{% static "styles/footer.css" %}">
+    <link rel="stylesheet" href="{% static 'styles/chat/room.css' %}">
+    <link rel="stylesheet" href="{% static "styles/chat/home.css" %}">
+{% endblock %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+
+    <div class="chat-container">
+        <div class="display-chats">
+            {% include "chat/chat-header.html" %}
+            {% include "chat/chats.html" %}
+        </div>
+
+        <div class="messaging-space">
+            <div class="friend-header">
+                {% with chat.members.all|exclude_self:request.user as other_user %}
+                    {% if other_user.image %}
+                        <img src="{{ other_user.image.crop.70x70 }}"
+                             class="friends-profile-picture"
+                             alt="{{ other_user.username }}">
+                    {% else %}
+                        <img class="friends-profile-picture"
+                             src="{% static 'images/profile_default.png' %}"
+                             alt="{{ other_user.username }}">
+                    {% endif %}
+                    {% if chat.name %}
+                        <div>
+                            <div class="friend-name-room">{{ chat.name }}</div>
+                        </div>
+                    {% else %}
+                        <div>
+                            <div class="friend-name-room">{{ chat.members.all|exclude_self:request.user }}</div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div id="chat-log">
+                {% for message in chat.messages.all %}
+                    <div class="chat-message">
+                        <strong>{{ message.author.username }}:</strong>
+                        {{ message.text }}
+                        <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="typing-container">
+                <input id="chat-message-input" type="text" placeholder="Type your message here..."><br>
+                <input id="chat-message-submit" type="submit" value="Send">
+            </div>
+            {{ room_name|json_script:"room-name" }}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector('#chat-log');
+            const newMessage = document.createElement('div');
+            username = data.username;
+            message = data.message;
+            if (username !== undefined && message !== undefined) {
+                newMessage.classList.add('chat-message');
+                newMessage.innerHTML = `<strong>${data.username}:</strong> ${data.message} <span class="timestamp">(${new Date().toLocaleString()})</span>`;
+                chatLog.appendChild(newMessage);
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+            }
+
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.key === 'Enter') {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+
+{% endblock %}

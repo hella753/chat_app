@@ -1,0 +1,15 @@
+{% if chats %}
+{% for chat in chats %}
+    <div>
+    {% include 'chat/chat.html' %}
+    </div>
+{% endfor %}
+{% else %}
+    <div class="no-message">
+        You Have No Chats Available
+    </div>
+    <div class="no-message">
+        <button class="btn-start-chat">Start a New Chat</button>
+    </div>
+
+{% endif %}
