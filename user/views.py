@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView, FormView
 from mixins.search_mixin import SearchMixIn
 from user.forms import RegistrationForm, UpdatePasswordForm, ProfileUpdateForm
 from user.models import User
@@ -112,7 +112,7 @@ class VerificationView(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class FriendListingView(ListView):
+class FriendListingView(SearchMixIn, ListView):
     """
     List all friends that the user has.
     """
@@ -126,6 +126,97 @@ class FriendListingView(ListView):
         if user.is_authenticated and isinstance(user, User):
             return user.friends.all()
         return User.objects.none()
+
+
+@method_decorator(login_required, name="dispatch")
+class FriendRequestListingView(SearchMixIn, ListView):
+    """
+    List all friend requests that the user has.
+    """
+    template_name = "profile/friend-requests.html"
+    model = User
+    context_object_name = "friend_requests"
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated and isinstance(user, User):
+            return user.friend_requests.all()
+        return User.objects.none()
+
+
+@method_decorator(login_required, name="dispatch")
+class AddFriendRequestView(View):
+    """
+    Add a friend request to the user.
+    """
+    template_name = "profile/add-friend.html"
+    success_url = reverse_lazy("accounts:profile")
+
+    def post(self, request, username):
+        user = request.user
+        try:
+            friend = User.objects.get(username=username)
+            friend.friend_requests.add(user)
+            user.friend_requests.remove(friend)
+
+        except User.DoesNotExist:
+            return redirect(self.success_url)
+        return redirect(self.success_url)
+
+
+@method_decorator(login_required, name="dispatch")
+class AcceptFriendRequestView(View):
+    """
+    Accept a friend request from the user.
+    """
+    template_name = "profile/friend_requests.html"
+    success_url = reverse_lazy("accounts:friend_requests")
+
+    def post(self, request, username):
+        user = request.user
+        try:
+            friend = User.objects.get(username=username)
+            user.friends.add(friend)
+        except User.DoesNotExist:
+            return redirect(self.success_url)
+        return redirect(self.success_url)
+
+
+@method_decorator(login_required, name="dispatch")
+class DeclineFriendRequestView(View):
+    """
+    Decline a friend request from the user.
+    """
+    template_name = "profile/friend_requests.html"
+    success_url = reverse_lazy("accounts:friend_requests")
+
+    def post(self, request, username):
+        user = request.user
+        try:
+            friend = User.objects.get(username=username)
+            user.friend_requests.remove(friend)
+        except User.DoesNotExist:
+            return redirect(self.success_url)
+        return redirect(self.success_url)
+
+
+@method_decorator(login_required, name="dispatch")
+class RemoveFriendView(View):
+    """
+    Remove a friend from the user.
+    """
+    template_name = "profile/friends.html"
+    success_url = reverse_lazy("accounts:friends")
+
+    def post(self, request, username):
+        user = request.user
+        try:
+            friend = User.objects.get(username=username)
+            user.friends.remove(friend)
+        except User.DoesNotExist:
+            return redirect(self.success_url)
+        return redirect(self.success_url)
 
 
 class PageNotFound(TemplateView):

@@ -35,6 +35,11 @@ urlpatterns = [
     path('my-profile/<str:username>/update/password/', views.ProfileUpdatePasswordView.as_view(), name='profile_update_password'),
     path('activate/<int:uid>/<str:token>/', views.VerificationView.as_view(), name='activate'),
     path("friends/", views.FriendListingView.as_view(), name="friends"),
+    path("friends/requests", views.FriendRequestListingView.as_view(), name="friend_requests"),
+    path("add-friend/<str:username>/", views.AddFriendRequestView.as_view(), name="add_friend"),
+    path("accept-friend/<str:username>/", views.AcceptFriendRequestView.as_view(), name="accept_friend"),
+    path("decline-friend/<str:username>/", views.DeclineFriendRequestView.as_view(), name="decline_friend"),
+    path("remove-friend/<str:username>/", views.RemoveFriendView.as_view(), name="remove_friend"),
     # path('page-not-found/', views.PageNotFound.as_view(), name='page_not_found'),
     # path('server-error/', views.InternalServerError.as_view(), name='server_error'),
 ]

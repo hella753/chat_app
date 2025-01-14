@@ -23,11 +23,14 @@
             <h2>🌸Last Name: {{ user.last_name }}</h2>
             <h2>🌸Username: {{ user.username }}</h2>
             <h2>🌸Email: {{ user.email }}</h2>
-            {% if user not in request.user.friends.all %}
-                <button class="btn">
-                    Add Friend
-                </button>
-            {% endif %}
+            <form action="{% url "accounts:add_friend" user.username %}" method="POST">
+                {% csrf_token %}
+                {% if user not in request.user.friends.all %}
+                    <button class="btn">
+                        Add Friend
+                    </button>
+                {% endif %}
+            </form>
         </div>
 
     </div>
