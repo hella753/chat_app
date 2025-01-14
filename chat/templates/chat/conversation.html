@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "styles/navbar.css" %}">
+    <link rel="stylesheet" href="{% static "styles/footer.css" %}">
+    <link rel="stylesheet" href="{% static 'styles/chat/conversation.css' %}">
+    <link rel="stylesheet" href="{% static "styles/chat/home.css" %}">
+{% endblock %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+
+    <div class="chat-container">
+        <div class="display-chats">
+            {% include "chat/chat-header.html" %}
+            {% include "chat/chats.html" %}
+        </div>
+
+        <div class="messaging-space">
+            <div class="friend-header">
+                {% with chat.members.all as members %}
+                    {% if members.0 == user %}
+                        {% with members.1 as other_user %}
+                            {% if other_user.image %}
+                                <img src="{{ other_user.image.crop.70x70 }}"
+                                     class="friends-profile-picture"
+                                     alt="{{ other_user.username }}">
+                            {% else %}
+                                <img class="friends-profile-picture"
+                                     src="{% static 'images/profile_default.png' %}"
+                                     alt="{{ other_user.username }}">
+                            {% endif %}
+                            <div class="friend-name-conv">{{ other_user }}</div>
+                        {% endwith %}
+                    {% else %}
+                        {% with members.0 as other_user %}
+                            {% if other_user.image %}
+                                <img src="{{ other_user.image.crop.70x70 }}"
+                                     class="friends-profile-picture"
+                                     alt="{{ other_user.username }}">
+                            {% else %}
+                                <img class="friends-profile-picture"
+                                     src="{% static 'images/profile_default.png' %}"
+                                     alt="{{ other_user.username }}">
+                            {% endif %}
+                            <div class="friend-name-conv">{{ other_user }}</div>
+                        {% endwith %}
+                    {% endif %}
+
+                {% endwith %}
+            </div>
+            <div id="chat-log">
+                {% for message in messages.all %}
+                    {% if message.author == request.user %}
+                        <div class="chat-message my-message">
+                            <strong class="username">{{ message.author.username }}</strong>
+                            <div class="message-container">
+                                {{ message.text }}
+                                <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="chat-message">
+                            <strong class="username">{{ message.author.username }}</strong>
+                            <div class="message-container">
+                                {{ message.text }}
+                                <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="align-right">
+                <div class="typing-container">
+                    <textarea id="chat-message-input" type="text"
+                              placeholder="Type your message here..."></textarea><br>
+                    <input id="chat-message-submit" type="submit" value="Send">
+                </div>
+                {{ conversation|json_script:"conversation" }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        const conversationId = JSON.parse(document.getElementById('conversation').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + conversationId
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector('#chat-log');
+            const newMessage = document.createElement('div');
+            username = data.username;
+            message = data.message;
+            if (username !== undefined && message !== undefined) {
+                newMessage.classList.add('chat-message');
+                if (username === '{{ request.user.username }}') {
+                    newMessage.classList.add('my-message');
+                }
+                newMessage.innerHTML = `<strong class="username">${data.username}:</strong> <div class="message-container">${data.message} <span class="timestamp">(${new Date().toLocaleString()})</span></div>`;
+                chatLog.appendChild(newMessage);
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+            }
+
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.key === 'Enter') {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+
+{% endblock %}

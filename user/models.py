@@ -35,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         verbose_name=_('Superuser')
     )
+    friends = models.ManyToManyField('self', blank=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["first_name", "last_name"]

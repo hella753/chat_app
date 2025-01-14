@@ -34,20 +34,21 @@ ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+    # Built-in Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'channels',
-    'user',
-    'chat',
     'versatileimagefield',
     'celery',
     'django_celery_results',
-
+    'user',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -185,3 +187,8 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 handler404 = "user.views.PageNotFound"
 handler500 = "user.views.InternalServerError"
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

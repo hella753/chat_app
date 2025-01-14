@@ -1,5 +1,5 @@
-# chat/urls.py
-from django.urls import path
+from django.conf import settings
+from django.urls import path, include
 
 from . import views
 
@@ -7,5 +7,6 @@ app_name = "chat"
 
 urlpatterns = [
     path("chats/", views.ChatListingView.as_view(), name="home"),
-    path("<str:room_name>/", views.room, name="room"),
+    path("create/", views.ChatCreationView.as_view(), name="create"),
+    path("<str:conversation>/", views.ChatDetailView.as_view(), name="conversation"),
 ]

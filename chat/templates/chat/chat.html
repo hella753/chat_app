@@ -1,30 +1,42 @@
-{% load custom_filters %}
 {% load static %}
 
 
 <div class="chat">
-    <a href="{% url "chat:room" chat.id %}">
+    <a href="{% url "chat:conversation" chat.id %}">
         <div class="chat-info">
-            {% with chat.members.all|exclude_self:request.user as other_user %}
-                {% if other_user.image %}
-                    <img src="{{ other_user.image.crop.70x70 }}"
-                         class="friends-profile-picture"
-                         alt="{{ other_user.username }}">
+            {% with chat.members.all as members %}
+                {% if members.0 == user %}
+                    {% with members.1 as other_user %}
+                        {% if other_user.image %}
+                            <img src="{{ other_user.image.crop.70x70 }}"
+                                 class="friends-profile-picture"
+                                 alt="{{ other_user.username }}">
+                        {% else %}
+                            <img class="friends-profile-picture"
+                                 src="{% static 'images/profile_default.png' %}"
+                                 alt="{{ other_user.username }}">
+                        {% endif %}
+                        <div>
+                            <div class="friend-name">{{ other_user }}</div>
+                            <div class="friend-last-message">Last Message</div>
+                        </div>
+                    {% endwith %}
                 {% else %}
-                    <img class="friends-profile-picture"
-                         src="{% static 'images/profile_default.png' %}"
-                         alt="{{ other_user.username }}">
-                {% endif %}
-                {% if chat.name %}
-                    <div>
-                        <div class="friend-name">{{ chat.name }}</div>
-                        <div class="friend-last-message">Last Message</div>
-                    </div>
-                {% else %}
-                    <div>
-                        <div class="friend-name">{{ chat.members.all|exclude_self:request.user }}</div>
-                        <div class="friend-last-message">Last Message</div>
-                    </div>
+                    {% with members.0 as other_user %}
+                        {% if other_user.image %}
+                            <img src="{{ other_user.image.crop.70x70 }}"
+                                 class="friends-profile-picture"
+                                 alt="{{ other_user.username }}">
+                        {% else %}
+                            <img class="friends-profile-picture"
+                                 src="{% static 'images/profile_default.png' %}"
+                                 alt="{{ other_user.username }}">
+                        {% endif %}
+                        <div>
+                            <div class="friend-name">{{ other_user }}</div>
+                            <div class="friend-last-message">Last Message</div>
+                        </div>
+                    {% endwith %}
                 {% endif %}
             {% endwith %}
         </div>
