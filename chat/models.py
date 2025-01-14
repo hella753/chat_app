@@ -21,6 +21,7 @@ class Message(models.Model):
     text = models.TextField()
     author = models.ForeignKey('user.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['created_at']

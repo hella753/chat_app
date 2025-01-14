@@ -8,13 +8,20 @@
                 {% if members.0 == user %}
                     {% with members.1 as other_user %}
                         {% if other_user.image %}
-                            <img src="{{ other_user.image.crop.70x70 }}"
-                                 class="friends-profile-picture"
-                                 alt="{{ other_user.username }}">
+                            <div class="image-container" id="user-chat-{{ other_user.username }}">
+                                <img src="{{ other_user.image.crop.70x70 }}"
+                                     class="friends-profile-picture"
+                                     alt="{{ other_user.username }}">
+                                <div class="circle"></div>
+                            </div>
                         {% else %}
-                            <img class="friends-profile-picture"
-                                 src="{% static 'images/profile_default.png' %}"
-                                 alt="{{ other_user.username }}">
+                            <div class="image-container" id="user-chat-{{ other_user.username }}" >
+
+                                <img class="friends-profile-picture"
+                                     src="{% static 'images/profile_default.png' %}"
+                                     alt="{{ other_user.username }}">
+                                <div class="circle"></div>
+                            </div>
                         {% endif %}
                         <div>
                             <div class="friend-name">{{ other_user }}</div>
@@ -24,13 +31,22 @@
                 {% else %}
                     {% with members.0 as other_user %}
                         {% if other_user.image %}
-                            <img src="{{ other_user.image.crop.70x70 }}"
-                                 class="friends-profile-picture"
-                                 alt="{{ other_user.username }}">
+                            <div class="image-container" id="user-chat-{{ other_user.username }}">
+
+                                <img src="{{ other_user.image.crop.70x70 }}"
+                                     class="friends-profile-picture"
+                                     alt="{{ other_user.username }}">
+                                <div class="circle"></div>
+                            </div>
+
                         {% else %}
-                            <img class="friends-profile-picture"
-                                 src="{% static 'images/profile_default.png' %}"
-                                 alt="{{ other_user.username }}">
+                            <div class="image-container" id="user-chat-{{ other_user.username }}">
+                                <img class="friends-profile-picture"
+                                     src="{% static 'images/profile_default.png' %}"
+                                     alt="{{ other_user.username }}">
+                                <div class="circle"></div>
+                            </div>
+
                         {% endif %}
                         <div>
                             <div class="friend-name">{{ other_user }}</div>

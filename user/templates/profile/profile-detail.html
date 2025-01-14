@@ -23,9 +23,11 @@
             <h2>🌸Last Name: {{ user.last_name }}</h2>
             <h2>🌸Username: {{ user.username }}</h2>
             <h2>🌸Email: {{ user.email }}</h2>
-            <button class="btn">
-                Click To Chat
-            </button>
+            {% if user not in request.user.friends.all %}
+                <button class="btn">
+                    Add Friend
+                </button>
+            {% endif %}
         </div>
 
     </div>

@@ -122,9 +122,11 @@ a {
     border-radius: 8px;
     width: 400px;
     max-width: 90%;
+    max-height: 60vh;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     font-family: "Montserrat", sans-serif;
+    overflow-y: auto;
 }
 
 .close {
@@ -137,10 +139,17 @@ a {
     margin-left: 350px;
 }
 
+ul {
+    padding: 0;
+    margin: 0;
+    max-height: calc(60vh - 200px);
+    overflow-y: auto;
+    list-style-type: none;
+}
 
 li {
     list-style-type: none;
-    margin: 0;
+    margin: 10px 0;
     text-align: start;
 }
 
@@ -154,6 +163,8 @@ li {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+    width: 100%;
+    text-align: left;
 }
 
 .friend-button:hover {

@@ -5,8 +5,14 @@ from chat.models import Chat, Message
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    """
+    ChatConsumer class is a subclass of AsyncWebsocketConsumer.
+    It handles WebSocket connections and messages.
+    """
     async def connect(self):
-        # Called on connection.
+        """
+        Called when the websocket is handshaking as part of the connection process.
+        """
         self.conversation = self.scope["url_route"]["kwargs"]["conversation"]
         self.conv_group_name = f"chat_{self.conversation}"
 
@@ -22,29 +28,42 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     async def disconnect(self, close_code):
-        # Leave a room group
+        """
+        Called when the WebSocket closes for any reason.
+        """
         await self.channel_layer.group_discard(self.conv_group_name, self.channel_name)
 
-    # Receive a message from WebSocket
     async def receive(self, text_data):
+        """
+        Called when the consumer receives data.
+        :param text_data: Received data
+        """
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         user = self.scope['user']
 
         await self.save_message(user, conversation=self.conversation, message=message)
 
-        # Send a message to a room group
-        await self.channel_layer.group_send(
-            self.conv_group_name,
-            {
-                'type': 'chat_message',
-                'message': message,
-                'username': user.username
-            }
-        )
+        if message.strip() != '':
+            recipients = await self.get_chat_members(self.conversation)
+            for recipient in recipients:
+                if recipient != user.username:
+                    # Send a message to a room group
+                    await self.channel_layer.group_send(
+                        self.conv_group_name,
+                        {
+                            'type': 'chat_message',
+                            'message': message,
+                            'username': user.username,
+                            'recipient': recipient
+                        }
+                    )
 
-    # Receive a message from conversation group
     async def chat_message(self, event):
+        """
+        Called when a message is received from a room group.
+        :param event: Received event
+        """
         message = event["message"]
         username = event['username']
 
@@ -64,8 +83,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         :return: None
         """
         aclose_old_connections()
-        chat, created = Chat.objects.get_or_create(id=conversation)
-        Message.objects.create(chat=chat, author=user, text=message)
+        if message.strip() != '':
+            chat, created = Chat.objects.get_or_create(id=conversation)
+            Message.objects.create(chat=chat, author=user, text=message, read=False)
 
     @database_sync_to_async
     def get_previous_messages(self, conversation):
@@ -83,3 +103,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     for message in chat.messages.all()]
         except Chat.DoesNotExist:
             return []
+
+    @database_sync_to_async
+    def get_chat_members(self, conversation):
+        """
+        Retrieve members of the chat.
+        """
+        aclose_old_connections()
+        chat = Chat.objects.get(id=conversation)
+        return [member.username for member in chat.members.all()]

@@ -11,39 +11,7 @@
 
 {% block content %}
     {% include 'navbar.html' %}
-
-    <div id="new--modal">
-        <div class="modal-content">
-
-            <span class="close">&times;</span>
-            <h1>Choose a Friend to start a chat with</h1>
-
-            <label>
-                Search for a friend:
-                <input id="search" type="text" name="search">
-            </label>
-
-            <div>
-                <h2>My Friends</h2>
-                <ul>
-                    {% for friend in friends %}
-                        <form method="POST" action="{% url "chat:create" %}">
-                            {% csrf_token %}
-                            <li>
-                                <button type="submit" class="friend-button">
-                                    {{ friend.username }}
-                                    <input type="hidden" name="friend" value="{{ friend.id }}">
-                                </button>
-                            </li>
-                        </form>
-
-                    {% endfor %}
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
+    {% include 'chat/modal.html' %}
     <div class="chat-container">
         <div class="display-chats">
             {% include "chat/chat-header.html" %}
@@ -56,55 +24,5 @@
 {% endblock %}
 
 {% block script %}
-    <script>
-        const modal = document.getElementById("new--modal");
-        const btn = document.querySelector(".btn-new-message");
-        const chatContainer = document.querySelector(".chat-container");
-        const closeBtn = document.querySelector(".close");
-        const friends = document.querySelectorAll(".friend-button");
-
-        btn.onclick = function () {
-            modal.style.display = "flex";
-            resetFriendDisplay();
-        }
-
-        closeBtn.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        function resetFriendDisplay() {
-            for (let i = 0; i < friends.length; i++) {
-                if (i < 5) {
-                    friends[i].style.display = "block";
-                } else {
-                    friends[i].style.display = "none";
-                }
-            }
-        }
-
-        search = document.getElementById("search");
-
-        search.addEventListener("input", function () {
-            let friends = document.querySelectorAll(".friend-button");
-            let searchValue = search.value.toLowerCase();
-            if (searchValue) {
-                for (let friend of friends) {
-                    if (friend.textContent.toLowerCase().includes(searchValue)) {
-                        friend.style.display = "block";
-                    } else {
-                        friend.style.display = "none";
-                    }
-                }
-            } else {
-                resetFriendDisplay();
-            }
-        });
-        resetFriendDisplay();
-    </script>
+    <script src="{% static 'js/modal.js' %}"></script>
 {% endblock %}

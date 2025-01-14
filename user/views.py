@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView
 from mixins.search_mixin import SearchMixIn
 from user.forms import RegistrationForm, UpdatePasswordForm, ProfileUpdateForm
 from user.models import User
@@ -109,6 +109,23 @@ class VerificationView(View):
                 request,
                 'authorization/activation-failed.html'
             )
+
+
+@method_decorator(login_required, name="dispatch")
+class FriendListingView(ListView):
+    """
+    List all friends that the user has.
+    """
+    template_name = "profile/friends.html"
+    model = User
+    context_object_name = "friends"
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated and isinstance(user, User):
+            return user.friends.all()
+        return User.objects.none()
 
 
 class PageNotFound(TemplateView):
