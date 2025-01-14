@@ -7,3 +7,8 @@ class ChatCreationForm(forms.ModelForm):
         model = Chat
         fields = []
 
+
+class ChatDeletionForm(forms.ModelForm):
+    class Meta:
+        model = Chat
+        fields = []

@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView
-from chat.forms import ChatCreationForm
+from django.views.generic import ListView, CreateView, DeleteView
+from chat.forms import ChatCreationForm, ChatDeletionForm
 from chat.models import Chat
 from user.models import User
 
@@ -79,3 +79,17 @@ class ChatCreationView(CreateView):
             chat_instance.members.add(friend)
 
         return super().form_valid(form)
+
+
+@method_decorator(login_required, name="dispatch")
+class ChatDeletionView(DeleteView):
+    """
+    Delete a chat
+    """
+    form_class = ChatDeletionForm
+    success_url = reverse_lazy("chat:home")
+    template_name = "chat/home.html"
+
+    def get_object(self, queryset=None):
+        conversation = self.kwargs.get('conversation')
+        return get_object_or_404(Chat, id=conversation)

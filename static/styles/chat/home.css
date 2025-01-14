@@ -167,3 +167,24 @@ li {
     padding: 5px;
     border-radius: 5px;
 }
+
+.delete-img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.delete-img:hover {
+    filter: invert(0.5);
+}
+
+.chat-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: end;
+}
+
+.button-div {
+    margin-left: 250px;
+}
