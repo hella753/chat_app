@@ -18,7 +18,8 @@ class Message(models.Model):
     Message model for chat
     """
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
-    text = models.TextField()
+    text = models.TextField(null=True, blank=True)
+    file = models.FileField(upload_to='chat_files/', null=True, blank=True)
     author = models.ForeignKey('user.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)

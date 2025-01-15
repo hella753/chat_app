@@ -110,3 +110,31 @@
     font-family: "Montserrat", sans-serif;
 }
 
+.message-file {
+    display: flex;
+    max-width: 250px;
+    max-height: 400px;
+}
+
+#file-upload {
+    display: none;
+}
+
+.upload-file-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.file-uploading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    transition: 0.5s;
+}
+
+.file-uploading-container:hover {
+    transform: scale(1.1);
+}

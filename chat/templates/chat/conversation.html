@@ -59,6 +59,9 @@
                             <strong class="username">{{ message.author.username }}</strong>
                             <div class="message-container">
                                 {{ message.text }}
+                                {% if message.file %}
+                                    <img class="message-file" src="{{ message.file.url }}">
+                                {% endif %}
                                 <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
                             </div>
                         </div>
@@ -67,6 +70,9 @@
                             <strong class="username">{{ message.author.username }}</strong>
                             <div class="message-container">
                                 {{ message.text }}
+                                {% if message.file %}
+                                    <img class="message-file" src="{{ message.file.url }}">
+                                {% endif %}
                                 <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
                             </div>
                         </div>
@@ -75,6 +81,12 @@
             </div>
 
             <div class="align-right">
+                <div class="file-uploading-container">
+                    <label for="file-upload" class="file-upload">
+                        <img class="upload-file-icon" src="{% static "images/file-upload.png" %}">
+                    </label>
+                    <input type="file" id="file-upload">
+                </div>
                 <div class="typing-container">
                     <textarea id="chat-message-input" type="text"
                               placeholder="Type your message here..."></textarea><br>
@@ -88,6 +100,10 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+        window.chatConfig = {
+            currentUserUsername: "{{ request.user.username }}",};
+    </script>
     <script src="{% static 'js/chat.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>
 {% endblock %}

@@ -1,6 +1,9 @@
+import base64
 import json
+import uuid
 from channels.db import database_sync_to_async, aclose_old_connections
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.core.files.base import ContentFile
 from chat.models import Chat, Message
 
 
@@ -41,8 +44,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         user = self.scope['user']
+        file = text_data_json.get("file", None)
 
-        await self.save_message(user, conversation=self.conversation, message=message)
+        await self.save_message(user, conversation=self.conversation, file=file, message=message)
 
         if message.strip() != '':
             recipients = await self.get_chat_members(self.conversation)
@@ -55,6 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                             'type': 'chat_message',
                             'message': message,
                             'username': user.username,
+                            'file': file,
                             'recipient': recipient
                         }
                     )
@@ -66,26 +71,37 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         message = event["message"]
         username = event['username']
+        file = event["file"]
 
         # Send a message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
-            'username': username
+            'username': username,
+            'file': file,
         }))
 
     @database_sync_to_async
-    def save_message(self, user, conversation, message):
+    def save_message(self, user, conversation, message, file):
         """
         Save message to a database
         :param user: User object
         :param conversation: chat id
         :param message: message text
+        :param file: file
         :return: None
         """
         aclose_old_connections()
+
+        if file:
+            frmt, file_str = file.split(';base64,')
+            ext = frmt.split('/')[-1]
+            file_name = f"{uuid.uuid4()}.{ext}"
+            file_content = ContentFile(base64.b64decode(file_str), name=file_name)
+        else:
+            file_content = None
         if message.strip() != '':
             chat, created = Chat.objects.get_or_create(id=conversation)
-            Message.objects.create(chat=chat, author=user, text=message, read=False)
+            Message.objects.create(chat=chat, author=user, file=file_content, text=message, read=False)
 
     @database_sync_to_async
     def get_previous_messages(self, conversation):
@@ -99,6 +115,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             chat = Chat.objects.get(id=conversation)
             return [{'username': message.author.username,
                      'text': message.text,
+                     'file': message.file.url if message.file else None,
                      'created_at': message.created_at.strftime("%Y-%m-%d %H:%M:%S")}
                     for message in chat.messages.all()]
         except Chat.DoesNotExist:

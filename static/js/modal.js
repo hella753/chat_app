@@ -5,8 +5,6 @@ const chatContainer = document.querySelector(".chat-container");
 const closeBtn = document.querySelector(".close");
 const friends = document.querySelectorAll(".friend-button");
 
-console.log(btn)
-
 btn.onclick = function () {
     modal.style.display = "flex";
     resetFriendDisplay();
