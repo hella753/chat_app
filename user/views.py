@@ -119,7 +119,7 @@ class FriendListingView(SearchMixIn, ListView):
     template_name = "profile/friends.html"
     model = User
     context_object_name = "friends"
-    paginate_by = 10
+    paginate_by = 6
 
     def get_queryset(self):
         user = self.request.user
@@ -136,7 +136,7 @@ class FriendRequestListingView(SearchMixIn, ListView):
     template_name = "profile/friend-requests.html"
     model = User
     context_object_name = "friend_requests"
-    paginate_by = 10
+    paginate_by = 6
 
     def get_queryset(self):
         user = self.request.user
@@ -178,6 +178,7 @@ class AcceptFriendRequestView(View):
         try:
             friend = User.objects.get(username=username)
             user.friends.add(friend)
+            user.friend_requests.remove(friend)
         except User.DoesNotExist:
             return redirect(self.success_url)
         return redirect(self.success_url)

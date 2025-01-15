@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static "styles/navbar.css" %}">
     <link rel="stylesheet" href="{% static "styles/footer.css" %}">
     <link rel="stylesheet" href="{% static "styles/user/friend-requests.css" %}">
+    <link rel="stylesheet" href="{% static "styles/pagination.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -39,4 +40,5 @@
             {% endfor %}
         </ul>
     </div>
+    {% include "pagination.html" %}
 {% endblock %}

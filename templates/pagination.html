@@ -1,0 +1,17 @@
+<div class="pagination-container">
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-squares">&laquo;</a>
+        {% endif %}
+        {% for page_num in paginator.page_range %}
+            {% if page_obj.number == page_num %}
+                <a href="?page={{ page_num }}" class="pagination-squares active">{{ page_num }}</a>
+            {% else %}
+                <a href="?page={{ page_num }}" class="pagination-squares">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-squares">&raquo;</a>
+        {% endif %}
+    </div>
+</div>
