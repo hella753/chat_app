@@ -45,6 +45,7 @@ class ChatDetailView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["image_formats"] = ["png", "jpg", "jpeg", "gif", "svg", "webp"]
         context["chats"] = Chat.objects.filter(members=self.request.user).prefetch_related("members")
         context["conversation"] = self.kwargs.get("conversation")
         context["chat"] = get_object_or_404(Chat, id=context["conversation"])

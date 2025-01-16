@@ -15,7 +15,16 @@ chatSocket.onmessage = function (e) {
     const username = data.username;
     const message = data.message;
 
-    console.log(data);
+    let fileContent = '';
+    const file = data.file;
+    if (file) {
+        const mimeType = file.split(';')[0].split(':')[1];
+        if (mimeType.startsWith('image/')) {
+            fileContent = `<img src="${file}" alt="file" class="message-file">`;
+        } else {
+            fileContent = `<a href="${file}" download class="message-file">🔗 Download</a>`;
+        }
+    }
 
     if (username !== undefined && message !== undefined) {
         newMessage.classList.add('chat-message');
@@ -27,8 +36,8 @@ chatSocket.onmessage = function (e) {
         newMessage.innerHTML = `
         <strong class="username">${data.username}:</strong> 
         <div class="message-container">
-            ${data.message} 
-            ${data.file ? `<img src="${data.file}" alt="file" class="message-file">` : ''}
+            ${data.message}
+            ${fileContent}
             <span class="timestamp">
                 (${new Date().toLocaleString()})
             </span>
@@ -48,6 +57,17 @@ document.querySelector('#chat-message-input').onkeyup = function (e) {
         document.querySelector('#chat-message-submit').click();
     }
 };
+
+const fileStatusDom = document.querySelector('#file-upload-status');
+const fileInputDom = document.querySelector('#file-upload');
+
+fileInputDom.addEventListener('change', () => {
+    if (fileInputDom.files.length > 0) {
+        fileStatusDom.style.background = '#86A788'
+    } else {
+        fileStatusDom.style.background = 'none';
+    }
+});
 
 document.querySelector('#chat-message-submit').onclick = async function (e) {
     const messageInputDom = document.querySelector('#chat-message-input');
@@ -71,4 +91,5 @@ document.querySelector('#chat-message-submit').onclick = async function (e) {
 
     messageInputDom.value = '';
     fileInputDom.value = ''; // Clear the file input
+    fileStatusDom.style.background = 'none';
 };

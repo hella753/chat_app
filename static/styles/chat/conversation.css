@@ -125,6 +125,7 @@
     height: 50px;
     cursor: pointer;
     margin-top: 10px;
+    transition: 0.5s;
 }
 
 .file-uploading-container {
@@ -132,9 +133,24 @@
     justify-content: center;
     align-items: center;
     margin-right: 20px;
-    transition: 0.5s;
 }
 
-.file-uploading-container:hover {
+.upload-file-icon:hover {
     transform: scale(1.1);
+}
+
+
+.file-upload-status {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: none;
+    margin-left: 10px;
+    border-color: #4B5945;
+    border-style: solid;
+    border-width: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }

@@ -92,9 +92,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         aclose_old_connections()
 
+        mime_type_map = {
+            'application/pdf': 'pdf',
+            'application/msword': 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+            'text/plain': 'txt',
+            'application/zip': 'zip',
+        }
+
         if file:
             frmt, file_str = file.split(';base64,')
             ext = frmt.split('/')[-1]
+
+            mime_tp = frmt.split(':')[1]
+
+            if ext not in ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp']:
+                ext = mime_type_map.get(mime_tp, 'txt')
+
             file_name = f"{uuid.uuid4()}.{ext}"
             file_content = ContentFile(base64.b64decode(file_str), name=file_name)
         else:
