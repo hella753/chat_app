@@ -6,7 +6,7 @@ const chatSocket = new WebSocket(
     + '/ws/chat/'
     + conversationId
     + '/'
-);
+); // WebSocket connection
 
 
 chatSocket.onmessage = function (e) {
@@ -25,7 +25,7 @@ chatSocket.onmessage = function (e) {
         } else {
             fileContent = `<a href="${file}" download class="message-file">🔗 Download</a>`;
         }
-    }
+    } // Handle file content
 
     if (username !== undefined && message !== undefined) {
         newMessage.classList.add('chat-message');
@@ -33,7 +33,6 @@ chatSocket.onmessage = function (e) {
         if (username === user) {
             newMessage.classList.add('my-message');
         }
-
         newMessage.innerHTML = `
         <strong class="username">${data.username}:</strong> 
         <div class="message-container">
@@ -45,19 +44,35 @@ chatSocket.onmessage = function (e) {
         </div>`;
         chatLog.appendChild(newMessage);
         chatLog.scrollTop = chatLog.scrollHeight;
-    }
+    } // Handle message content
+
+    if (data.type === 'online_users') {
+        const onlineUsers = data.online_users;
+        const circles = document.querySelectorAll('[id^="circle_"]');
+        circles.forEach(circle => {
+            const username = circle.id.replace('circle_', '');
+            if (onlineUsers.includes(username)) {
+                circle.classList.remove('circle-inactive');
+                circle.classList.add('circle-active');
+            } else {
+                circle.classList.remove('circle-active');
+                circle.classList.add('circle-inactive');
+            }
+        });
+    } // Handle online users
 };
+
 
 chatSocket.onclose = function (e) {
     console.error('Chat socket closed unexpectedly');
-};
+}; // WebSocket close event
 
 document.querySelector('#chat-message-input').focus();
 document.querySelector('#chat-message-input').onkeyup = function (e) {
     if (e.key === 'Enter') {  // enter, return
         document.querySelector('#chat-message-submit').click();
     }
-};
+}; // Submit message on enter key press
 
 const fileStatusDom = document.querySelector('#file-upload-status');
 const fileInputDom = document.querySelector('#file-upload');
@@ -68,7 +83,7 @@ fileInputDom.addEventListener('change', () => {
     } else {
         fileStatusDom.style.background = 'none';
     }
-});
+}); // Change file status color
 
 document.querySelector('#chat-message-submit').onclick = async function (e) {
     const messageInputDom = document.querySelector('#chat-message-input');
@@ -91,12 +106,12 @@ document.querySelector('#chat-message-submit').onclick = async function (e) {
     }));
 
     messageInputDom.value = '';
-    fileInputDom.value = ''; // Clear the file input
+    fileInputDom.value = '';
     fileStatusDom.style.background = 'none';
-};
+}; // Send a message on submitting
 
 window.onload = function () {
     const chatLog = document.querySelector('#chat-log');
     chatLog.scrollTop = chatLog.scrollHeight;
-};
+}; // Scroll to the bottom of the chat log on a page load
 

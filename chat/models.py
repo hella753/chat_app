@@ -8,6 +8,7 @@ class Chat(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField('user.User', related_name='chats')
+    users_online = models.ManyToManyField('user.User', related_name='online_in_chat', blank=True)
 
     class Meta:
         ordering = ['-created_at']

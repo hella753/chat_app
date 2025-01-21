@@ -9,22 +9,36 @@ from chat.models import Chat, Message
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """
-    ChatConsumer class is a subclass of AsyncWebsocketConsumer.
-    It handles WebSocket connections and messages.
+    ChatConsumer handles WebSocket connections and messages.
     """
     async def connect(self):
         """
         Called when the websocket is handshaking as part of the connection process.
         """
-        self.conversation = self.scope["url_route"]["kwargs"]["conversation"]
-        self.conv_group_name = f"chat_{self.conversation}"
+        self.conversation = self.scope["url_route"]["kwargs"]["conversation"] # Get chat id from URL
+        self.conv_group_name = f"chat_{self.conversation}" # Create a group
+        self.user = self.scope['user'] # Get user object
 
+        self.chat = await self.get_chat_instance()
+
+        if not await self.is_user_online():
+            # If the user is not online, add him to the list of online users
+            await self.add_user_online()
+
+        # Add user to the group
         await self.channel_layer.group_add(self.conv_group_name, self.channel_name)
-
         await self.accept()
 
-        messages = await self.get_previous_messages(self.conversation)
+        online_users = await self.get_online_users()
+        event = {
+            'type': 'online_users_handler',
+            'online_users': online_users
+        }
+        # Send online users to the group
+        await self.channel_layer.group_send(self.conv_group_name, event)
 
+        # Get previous messages
+        messages = await self.get_previous_messages(self.conversation)
         await self.send(text_data=json.dumps({
             'type': 'previous_messages',
             'messages': messages
@@ -34,6 +48,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Called when the WebSocket closes for any reason.
         """
+        if await self.is_user_online():
+            # If the user is online, remove him from the list of online users
+            await self.remove_user_online()
+            online_users = await self.get_online_users()
+            event = {
+                'type': 'online_users_handler',
+                'online_users': online_users
+            }
+            # Send online users to the group
+            await self.channel_layer.group_send(self.conv_group_name, event)
+
+        # Remove user from the group
         await self.channel_layer.group_discard(self.conv_group_name, self.channel_name)
 
     async def receive(self, text_data):
@@ -46,6 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = self.scope['user']
         file = text_data_json.get("file", None)
 
+        # Save message to a database
         await self.save_message(user, conversation=self.conversation, file=file, message=message)
 
         if message.strip() != '':
@@ -144,8 +171,65 @@ class ChatConsumer(AsyncWebsocketConsumer):
         chat = Chat.objects.get(id=conversation)
         return [member.username for member in chat.members.all()]
 
+    async def online_users_handler(self, event):
+        """
+        Called when the number of online users changes.
+        """
+        online_users = event.get('online_users', None)
+        # Send a message to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'online_users',
+            'online_users': online_users
+        }))
+
+    @database_sync_to_async
+    def is_user_online(self):
+        """
+        Check if the user is online.
+        :return: Boolean.
+        """
+        aclose_old_connections()
+        return self.user in self.chat.users_online.all()
+
+    @database_sync_to_async
+    def add_user_online(self):
+        """
+        Add the user to chat's users_online field.
+        """
+        aclose_old_connections()
+        self.chat.users_online.add(self.user)
+
+    @database_sync_to_async
+    def remove_user_online(self):
+        """
+        Remove the user from chat's users_online field.
+        """
+        aclose_old_connections()
+        self.chat.users_online.remove(self.user)
+
+    @database_sync_to_async
+    def get_online_users(self):
+        """
+        Get a list of online users.
+        :return: List of online users.
+        """
+        aclose_old_connections()
+        return [user.username for user in self.chat.users_online.all()]
+
+    @database_sync_to_async
+    def get_chat_instance(self):
+        """
+        Get chat instance.
+        :return: Chat instance.
+        """
+        aclose_old_connections()
+        return Chat.objects.get(id=self.conversation)
+
 
 class NotificationConsumer(AsyncWebsocketConsumer):
+    """
+    NotificationConsumer handles WebSocket connections and messages.
+    """
     async def connect(self):
         """
         Called when the websocket is handshaking as part of the connection process.
@@ -153,6 +237,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         self.user_group_name = f"user_{self.user.id}_notifications"
 
+        # Add user to the group
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
 
         await self.accept()
@@ -173,7 +258,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'message': message,
             'recipient': recipient,
         }))
-
 
     async def notify(self, event):
         """

@@ -35,6 +35,7 @@
                                      alt="{{ other_user.username }}">
                             {% endif %}
                             <div class="friend-name-conv">{{ other_user }}</div>
+                            <div class="circle-inactive" id="circle_{{ other_user.username }}"></div>
                         {% endwith %}
                     {% else %}
                         {% with members.0 as other_user %}
@@ -48,6 +49,7 @@
                                      alt="{{ other_user.username }}">
                             {% endif %}
                             <div class="friend-name-conv">{{ other_user }}</div>
+                            <div class="circle-inactive" id="circle_{{ other_user.username }}"></div>
                         {% endwith %}
                     {% endif %}
 
