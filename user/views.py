@@ -7,6 +7,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView, FormView
+
+from chat.tasks import send_notification
 from mixins.search_mixin import SearchMixIn
 from user.forms import RegistrationForm, UpdatePasswordForm, ProfileUpdateForm
 from user.models import User
@@ -154,11 +156,12 @@ class AddFriendRequestView(View):
     success_url = reverse_lazy("accounts:profile")
 
     def post(self, request, username):
-        user = request.user
         try:
             friend = User.objects.get(username=username)
-            friend.friend_requests.add(user)
-            user.friend_requests.remove(friend)
+            friend.friend_requests.add(request.user)
+            request.user.friend_requests.remove(friend)
+            send_notification.delay(friend.id, f"New friend request!")
+
 
         except User.DoesNotExist:
             return redirect(self.success_url)
@@ -179,6 +182,7 @@ class AcceptFriendRequestView(View):
             friend = User.objects.get(username=username)
             user.friends.add(friend)
             user.friend_requests.remove(friend)
+            send_notification.delay(friend.id, f"Accepted your friend request!")
         except User.DoesNotExist:
             return redirect(self.success_url)
         return redirect(self.success_url)
