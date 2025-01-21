@@ -1,7 +1,11 @@
 {% load static %}
 
 <nav class="navbar">
-    <div class="logo">MyLogo</div>
+    <div class="logo">
+        <a href="{% url "chat:home" %}">
+        <img src="{% static "images/logo.png" %}" class="logo-image" />
+        </a>
+    </div>
     <form class="search-container" method="GET" action=".">
             <input type="text" name="username" placeholder="Search a User">
             <button type="submit" class="btn-search">

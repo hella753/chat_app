@@ -143,3 +143,47 @@ class ChatConsumer(AsyncWebsocketConsumer):
         aclose_old_connections()
         chat = Chat.objects.get(id=conversation)
         return [member.username for member in chat.members.all()]
+
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        """
+        Called when the websocket is handshaking as part of the connection process.
+        """
+        self.user = self.scope['user']
+        self.user_group_name = f"user_{self.user.id}_notifications"
+
+        await self.channel_layer.group_add(self.user_group_name, self.channel_name)
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        """
+        Called when the WebSocket closes for any reason.
+        """
+        await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+        recipient = text_data_json["recipient"]
+
+        # Send a message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'recipient': recipient,
+        }))
+
+
+    async def notify(self, event):
+        """
+        Called when a message is received from a room group.
+        """
+        message = event.get("message", "")
+        recipient = event.get("recipient", "")
+
+        # Send a message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'recipient': recipient
+        }))

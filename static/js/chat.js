@@ -8,6 +8,7 @@ const chatSocket = new WebSocket(
     + '/'
 );
 
+
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     const chatLog = document.querySelector('#chat-log');
@@ -93,3 +94,9 @@ document.querySelector('#chat-message-submit').onclick = async function (e) {
     fileInputDom.value = ''; // Clear the file input
     fileStatusDom.style.background = 'none';
 };
+
+window.onload = function () {
+    const chatLog = document.querySelector('#chat-log');
+    chatLog.scrollTop = chatLog.scrollHeight;
+};
+

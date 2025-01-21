@@ -2,6 +2,7 @@
 
 body {
     margin: 0;
+    background-color: floralwhite;
 }
 
 .chat-container {
@@ -9,6 +10,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 3fr;
     margin-bottom: 2%;
+    background-color: var(--cream);
 }
 
 .display-chats {
@@ -16,7 +18,6 @@ body {
     overflow-y: scroll;
     background-color: var(--cream);
     width: 70vh;
-
 }
 
 .messaging-space {

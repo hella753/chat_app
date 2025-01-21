@@ -25,7 +25,11 @@
                         {% endif %}
                         <div>
                             <div class="friend-name">{{ other_user }}</div>
-                            <div class="friend-last-message">Last Message</div>
+                            {% if chat.messages.last is not None %}
+                                <div class="friend-last-message">{{ chat.messages.last }}</div>
+                            {% else %}
+                                <div class="friend-last-message">No messages</div>
+                            {% endif %}
                         </div>
                     {% endwith %}
                 {% else %}
@@ -64,6 +68,6 @@
                 </form>
             </div>
         </div>
-
     </a>
 </div>
+

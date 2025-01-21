@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Serif+Georgian:wght@100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="{% static "styles/variables.css" %}">
+    <link rel="stylesheet" href="{% static "styles/notifications.css" %}">
     {% block styles %} {% endblock %}
 
 </head>
@@ -18,8 +19,13 @@
 
 {% endblock %}
 
+<div class="notification-container" id="notification-container">
+    <!-- Notifications will be dynamically added here -->
+</div>
+
 {% include 'footer.html' %}
 </body>
 
-{% block script %} {% endblock %}
+{% block script %}
+{% endblock %}
 </html>
