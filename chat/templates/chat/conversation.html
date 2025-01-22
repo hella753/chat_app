@@ -34,6 +34,7 @@
                                      src="{% static 'images/profile_default.png' %}"
                                      alt="{{ other_user.username }}">
                             {% endif %}
+                            <input type="hidden" id="recipient-username" value="{{ other_user.username }}">
                             <div class="friend-name-conv">{{ other_user }}</div>
                             <div class="circle-inactive" id="circle_{{ other_user.username }}"></div>
                         {% endwith %}
@@ -48,6 +49,7 @@
                                      src="{% static 'images/profile_default.png' %}"
                                      alt="{{ other_user.username }}">
                             {% endif %}
+                            <input type="hidden" id="recipient-username" value="{{ other_user.username }}">
                             <div class="friend-name-conv">{{ other_user }}</div>
                             <div class="circle-inactive" id="circle_{{ other_user.username }}"></div>
                         {% endwith %}
@@ -123,8 +125,8 @@
             currentUserUsername: "{{ request.user.username }}",
         };
     </script>
-    <script src="{% static 'js/chat.js' %}"></script>
+    <script type="module" src="{% static 'js/chat.js' %}"></script>
     <script src="{% static 'js/modal.js' %}"></script>
-    <script src="{% static "js/notifications.js" %}"></script>
+    <script type="module" src="{% static "js/notifications.js" %}"></script>
 
 {% endblock %}

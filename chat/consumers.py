@@ -70,6 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         user = self.scope['user']
+
         file = text_data_json.get("file", None)
 
         # Save message to a database
@@ -78,7 +79,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if message.strip() != '':
             recipients = await self.get_chat_members(self.conversation)
             for recipient in recipients:
-                if recipient != user.username:
+                if recipient != user:
                     # Send a message to a room group
                     await self.channel_layer.group_send(
                         self.conv_group_name,
@@ -87,7 +88,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                             'message': message,
                             'username': user.username,
                             'file': file,
-                            'recipient': recipient
+                            'recipient': recipient.username
+                        }
+                    )
+                    await self.channel_layer.group_send(
+                        f"user_{recipient.id}_notifications",
+                        {
+                            'type': 'notify',
+                            'message': f"You have a new message",
+                            'recipient': recipient.username,
+                            'sender': self.user.username
                         }
                     )
 
@@ -169,7 +179,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         aclose_old_connections()
         chat = Chat.objects.get(id=conversation)
-        return [member.username for member in chat.members.all()]
+        return [member for member in chat.members.all()]
 
     async def online_users_handler(self, event):
         """
@@ -235,6 +245,12 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         Called when the websocket is handshaking as part of the connection process.
         """
         self.user = self.scope['user']
+
+        if self.user.is_anonymous:
+            # If the user is not authenticated, close the connection
+            await self.close()
+            return
+
         self.user_group_name = f"user_{self.user.id}_notifications"
 
         # Add user to the group
@@ -248,26 +264,18 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         """
         await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
 
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        recipient = text_data_json["recipient"]
-
-        # Send a message to WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'recipient': recipient,
-        }))
-
     async def notify(self, event):
         """
         Called when a message is received from a room group.
         """
         message = event.get("message", "")
         recipient = event.get("recipient", "")
+        sender = event.get("sender", "")
 
-        # Send a message to WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'recipient': recipient
-        }))
+        if sender != "":
+            # Send a message to WebSocket
+            await self.send(text_data=json.dumps({
+                'message': message,
+                'recipient': recipient,
+                'sender': sender
+            }))

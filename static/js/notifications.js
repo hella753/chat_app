@@ -6,18 +6,20 @@ const notificationSocket = new WebSocket(
 
 notificationSocket.onmessage = function(event) {
     const data = JSON.parse(event.data);
-    const recipient = data['recipient'];
+    const sender = data['sender'];
+
+    console.log(data)
+
     const message = data['message'];
     const notificationContainer = document.getElementById('notification-container');
     const notification = document.createElement('div');
     notification.classList.add('notification');
     notification.innerHTML = `
-        <strong>${recipient}</strong>: ${message}
+        <strong>${sender}</strong>: ${message}
         <button class="close-btn" onclick="closeNotification(this)">x</button>
     `;
 
     notificationContainer.appendChild(notification);
-
 
     // Auto-remove notification after 5 seconds
     setTimeout(() => {

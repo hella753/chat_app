@@ -1,3 +1,4 @@
+
 const conversationId = JSON.parse(document.getElementById('conversation').textContent);
 
 const chatSocket = new WebSocket(
@@ -90,6 +91,7 @@ document.querySelector('#chat-message-submit').onclick = async function (e) {
     const message = messageInputDom.value;
     const fileInputDom = document.querySelector('#file-upload');
     const file = fileInputDom.files[0];
+    const recipientUsername = document.querySelector('#recipient-username').value;
 
     let fileData = null;
     if (file) {

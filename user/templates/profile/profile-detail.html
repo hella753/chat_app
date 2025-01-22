@@ -36,5 +36,10 @@
     </div>
 {% endblock %}
 {% block script %}
+    <script>
+        window.chatConfig = {
+            currentUserUsername: "{{ request.user.username }}",
+        };
+    </script>
     <script src="{% static 'js/notifications.js' %}"></script>
 {% endblock %}
