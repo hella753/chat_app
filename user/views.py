@@ -41,7 +41,9 @@ class RegisterView(CreateView):
         user.is_active = False
         user.save()
         current_site = get_current_site(self.request)
-        send_verification_email.delay(user, current_site, form)
+        current_site_domain = current_site.domain
+        email_address = form.cleaned_data.get('email')
+        send_verification_email.delay(user.id, current_site_domain, email_address)
         return redirect(self.success_url)
 
 
