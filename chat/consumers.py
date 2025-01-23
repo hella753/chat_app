@@ -5,6 +5,7 @@ from channels.db import database_sync_to_async, aclose_old_connections
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.files.base import ContentFile
 from chat.models import Chat, Message
+from user.models import User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -95,7 +96,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         f"user_{recipient.id}_notifications",
                         {
                             'type': 'notify',
-                            'message': f"You have a new message",
+                            'message': f"New Message!",
                             'recipient': recipient.username,
                             'sender': self.user.username
                         }
@@ -255,7 +256,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
         # Add user to the group
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
-
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -279,3 +279,48 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 'recipient': recipient,
                 'sender': sender
             }))
+
+
+class FriendRequestsConsumer(AsyncWebsocketConsumer):
+    """
+    FriendRequestsConsumer handles WebSocket connections and messages.
+    """
+    async def connect(self):
+        self.user = self.scope['user']
+
+        if self.user.is_anonymous:
+            # If the user is not authenticated, close the connection
+            await self.close()
+            return
+
+        self.user_group_name = f"user_{self.user.id}_request_notifications"
+
+        # Add user to the group
+        await self.channel_layer.group_add(self.user_group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        """
+        Called when the WebSocket closes for any reason.
+        """
+        await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
+
+    async def receive(self, text_data=None):
+        text_data_json = json.loads(text_data)
+        recipient = text_data_json.get("recipient", None)
+
+        recipient = await self.get_user(recipient)
+
+        await self.channel_layer.group_send(
+            f"user_{recipient.id}_notifications",
+            {
+                'type': 'notify',
+                'message': f"New Friend Request",
+                'recipient': recipient.username,
+                'sender': self.user.username
+            }
+        )
+
+    @database_sync_to_async
+    def get_user(self, username):
+        return User.objects.get(username=username)

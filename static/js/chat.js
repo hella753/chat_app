@@ -73,7 +73,7 @@ document.querySelector('#chat-message-input').onkeyup = function (e) {
     if (e.key === 'Enter') {  // enter, return
         document.querySelector('#chat-message-submit').click();
     }
-}; // Submit message on enter key press
+}; // Submit a message on enter key press
 
 const fileStatusDom = document.querySelector('#file-upload-status');
 const fileInputDom = document.querySelector('#file-upload');
@@ -91,7 +91,6 @@ document.querySelector('#chat-message-submit').onclick = async function (e) {
     const message = messageInputDom.value;
     const fileInputDom = document.querySelector('#file-upload');
     const file = fileInputDom.files[0];
-    const recipientUsername = document.querySelector('#recipient-username').value;
 
     let fileData = null;
     if (file) {

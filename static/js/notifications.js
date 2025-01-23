@@ -8,8 +8,6 @@ notificationSocket.onmessage = function(event) {
     const data = JSON.parse(event.data);
     const sender = data['sender'];
 
-    console.log(data)
-
     const message = data['message'];
     const notificationContainer = document.getElementById('notification-container');
     const notification = document.createElement('div');

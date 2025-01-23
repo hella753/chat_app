@@ -6,8 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView, FormView
-
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView
 from chat.tasks import send_notification
 from mixins.search_mixin import SearchMixIn
 from user.forms import RegistrationForm, UpdatePasswordForm, ProfileUpdateForm

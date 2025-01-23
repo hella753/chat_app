@@ -21,12 +21,12 @@
             {% endif %}
             <h2>🌸First Name: {{ user.first_name }}</h2>
             <h2>🌸Last Name: {{ user.last_name }}</h2>
-            <h2>🌸Username: {{ user.username }}</h2>
+            <h2>🌸Username: <span class="username-for-friend-requests">{{ user.username }}</span></h2>
             <h2>🌸Email: {{ user.email }}</h2>
             <form action="{% url "accounts:add_friend" user.username %}" method="POST">
                 {% csrf_token %}
                 {% if user not in request.user.friends.all %}
-                    <button class="btn">
+                    <button id="friend-request-btn" class="btn">
                         Add Friend
                     </button>
                 {% endif %}
@@ -41,5 +41,6 @@
             currentUserUsername: "{{ request.user.username }}",
         };
     </script>
+    <script src="{% static 'js/requests.js' %}"></script>
     <script src="{% static 'js/notifications.js' %}"></script>
 {% endblock %}
