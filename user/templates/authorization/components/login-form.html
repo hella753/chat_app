@@ -1,0 +1,45 @@
+<form method="POST" action="{% url "accounts:login" %}">
+    {% csrf_token %}
+    <div class="form-element">
+        <label for="username">Username:</label>
+    </div>
+    <div class="form-element">
+        <input type="text" id="username" name="username" required>
+    </div>
+    {% if form.username.errors %}
+        <div class="error-message">
+            {% for error in form.username.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="form-element">
+        <label for="password">Password:</label>
+    </div>
+    <div class="form-element">
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        {% if form.password.errors %}
+            <div class="error-message">
+                {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <a href="{% url "accounts:password_reset" %}">Forgot Password?</a>
+    {% if form.non_field_errors %}
+        <div class="error-message non-field-errors">
+            {% for error in form.non_field_errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="form-element button-div">
+        <button class="btn" type="submit">Login</button>
+    </div>
+    <div class="register-info">Don't have an Account? <a
+            href="{% url "accounts:register" %}">Register</a></div>
+</form>

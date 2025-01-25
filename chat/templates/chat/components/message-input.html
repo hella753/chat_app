@@ -1,0 +1,13 @@
+{% load static %}
+
+<div class="file-uploading-container">
+    <label for="file-upload" class="file-upload">
+        <img class="upload-file-icon" src="{% static "images/file-upload.png" %}">
+    </label>
+    <input type="file" id="file-upload">
+    <div id="file-upload-status" class="file-upload-status"></div>
+</div>
+<div class="typing-container">
+    <textarea id="chat-message-input" type="text" placeholder="Type your message here..."></textarea><br>
+    <input id="chat-message-submit" type="submit" value="Send">
+</div>

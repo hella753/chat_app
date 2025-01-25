@@ -1,0 +1,8 @@
+{% load static %}
+
+<form method="POST" action="{% url 'chat:delete' chat.id %}">
+    {% csrf_token %}
+    <button class="chat-delete">
+        <img class="delete-img" src="{% static 'images/delete.png' %}" alt="Delete">
+    </button>
+</form>

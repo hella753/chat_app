@@ -1,0 +1,20 @@
+{% load custom_filters %}
+
+<div class="{{ class_name }}">
+    <strong class="username">{{ message.author.username }}</strong>
+    <div class="message-container">
+        {{ message.text }}
+        {% if message.file %}
+            {% with message.file.name|lower|get_extension as file_extension %}
+                {% if file_extension in image_formats %}
+                    <img class="message-file" src="{{ message.file.url }}" alt="photo">
+                {% else %}
+                    <div>
+                        <a href="{{ message.file.url }}" class="message-file">🔗 Download</a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+        <span class="timestamp">({{ message.created_at|date:"SHORT_DATETIME_FORMAT" }})</span>
+    </div>
+</div>

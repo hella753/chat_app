@@ -1,0 +1,23 @@
+{% load static %}
+
+{% if other_user.image %}
+    <div class="image-container" id="user-chat-{{ other_user.username }}">
+        <img src="{{ other_user.image.crop.70x70 }}"
+             class="friends-profile-picture"
+             alt="{{ other_user.username }}">
+    </div>
+{% else %}
+    <div class="image-container" id="user-chat-{{ other_user.username }}">
+        <img class="friends-profile-picture"
+             src="{% static 'images/profile_default.png' %}"
+             alt="{{ other_user.username }}">
+    </div>
+{% endif %}
+<div>
+    <div class="friend-name">{{ other_user }}</div>
+    {% if chat.messages.last is not None %}
+        <div class="friend-last-message">{{ chat.messages.last }}</div>
+    {% else %}
+        <div class="friend-last-message">No messages</div>
+    {% endif %}
+</div>

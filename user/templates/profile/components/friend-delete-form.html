@@ -1,0 +1,11 @@
+{% load static %}
+
+
+<form action="{% url 'accounts:remove_friend' friend.username %}" method="post">
+    {% csrf_token %}
+    <div>
+        <button type="submit" class="delete-friend-button">
+            <img class="img-delete" src="{% static "images/delete.png" %}" alt="delete"/>
+        </button>
+    </div>
+</form>

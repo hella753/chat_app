@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="reset-password-container">
-    <div class="reset">
-        <h2>Your account has not been activated</h2>
-        <p>Something went wrong. Please try registering again.</p>
-        <a href="{% url 'accounts:login' %}">Back to login</a>
+    <div class="reset-password-container">
+        <div class="reset">
+            <h2>Your account has not been activated</h2>
+            <p>Something went wrong. Please try registering again.</p>
+            <a href="{% url 'accounts:login' %}">Back to login</a>
+        </div>
     </div>
-</div>
 {% endblock %}
 

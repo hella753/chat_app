@@ -1,0 +1,13 @@
+{% load static %}
+{% if other_user.image %}
+    <img src="{{ other_user.image.crop.70x70 }}"
+         class="friends-profile-picture"
+         alt="{{ other_user.username }}">
+{% else %}
+    <img class="friends-profile-picture"
+         src="{% static 'images/profile_default.png' %}"
+         alt="{{ other_user.username }}">
+{% endif %}
+<input type="hidden" id="recipient-username" value="{{ other_user.username }}">
+<div class="friend-name-conv">{{ other_user }}</div>
+<div class="circle-inactive" id="circle_{{ other_user.username }}"></div>

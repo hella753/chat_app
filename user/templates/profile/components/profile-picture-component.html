@@ -1,0 +1,7 @@
+{% load static %}
+
+{% if not user.image %}
+    <img class="profile-picture" src="{% static 'images/profile_default.png' %}" alt="profile_picture">
+{% else %}
+    <img class="profile-picture" src="{{ user.image.crop.250x250 }}" alt="profile_picture">
+{% endif %}

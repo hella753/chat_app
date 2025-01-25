@@ -14,15 +14,7 @@
     <div class="profile-container">
         <div class="profile-info">
             <h1>My Profile</h1>
-            {% if not request.user.image %}
-                <img class="profile-picture" src="{% static 'images/profile_default.png' %}" alt="profile_picture">
-            {% else %}
-                <img class="profile-picture" src="{{ request.user.image.crop.250x250 }}" alt="profile_picture">
-            {% endif %}
-            <h2>🌸First Name: {{ request.user.first_name }}</h2>
-            <h2>🌸Last Name: {{ request.user.last_name }}</h2>
-            <h2>🌸Username: {{ request.user.username }}</h2>
-            <h2>🌸Email: {{ request.user.email }}</h2>
+            {% include 'profile/components/profile-component.html' with user=request.user %}
             <div class="profile-edit">
                 <div class="editing">
                     <a href="{% url "accounts:profile_update" request.user.username %}" class="edit-button">Edit

@@ -1,0 +1,12 @@
+<div>
+    <form class="form-accept-decline" action="{% url "accounts:accept_friend" friend.username %}"
+          method="POST">
+        {% csrf_token %}
+        <button class="btn-accept">Accept</button>
+    </form>
+    <form class="form-accept-decline" action="{% url "accounts:decline_friend" friend.username %}"
+          method="POST">
+        {% csrf_token %}
+        <button class="btn-decline">Decline</button>
+    </form>
+</div>

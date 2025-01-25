@@ -18,24 +18,9 @@
         <ul class="friends-ul">
             {% for friend in friends %}
                 <div>
-                    <form action="{% url 'accounts:remove_friend' friend.username %}" method="post">
-                        {% csrf_token %}
-                        <div>
-                            <button type="submit" class="delete-friend-button">
-                                <img class="img-delete" src="{% static "images/delete.png" %}" alt="delete"/>
-                            </button>
-                        </div>
-                    </form>
+                    {% include "profile/components/friend-delete-form.html" %}
                     <li class="friend">
-                        <a href="{% url "accounts:profile_detail" friend.username %}">
-                            <img src="
-
-
-                                    {% if friend.image %}{{ friend.image.url }}{% else %}{% static 'images/profile_default.png' %}{% endif %}"
-                                 class="friends-friend-profile-image"
-                                 alt="{{ friend.username }}">
-                            <p class="username-text">{{ friend.username }}</p>
-                        </a>
+                        {% include "profile/components/friend-card-component.html" %}
                     </li>
                 </div>
             {% endfor %}

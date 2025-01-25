@@ -1,0 +1,9 @@
+{% load static %}
+
+{% include 'profile/components/profile-picture-component.html' with user=user %}
+<h2>🌸First Name: {{ user.first_name }}</h2>
+<h2>🌸Last Name: {{ user.last_name }}</h2>
+<h2>🌸Username: <span class="username-for-friend-requests">{{ user.username }}</span></h2>
+<h2>🌸Email: {{ user.email }}</h2>
+
+

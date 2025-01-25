@@ -1,0 +1,11 @@
+<h1>You are already logged in</h1>
+
+<form method="POST" action="{% url "accounts:logout" %}">
+    {% csrf_token %}
+    <div class="logout-div">
+        <a href="{% url "accounts:profile" %}">Go back to your Profile</a>
+        <button class="btn" type="submit">
+            Logout
+        </button>
+    </div>
+</form>
