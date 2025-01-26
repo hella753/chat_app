@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -62,23 +63,24 @@ class ChatCreationView(CreateView):
     success_url = reverse_lazy("chat:home")
 
     def form_invalid(self, form):
+        print(form.errors)
         return super().form_invalid(form)
 
     def form_valid(self, form):
-        friend_id = self.request.POST.get("friend")
-        friend = User.objects.filter(id=friend_id).first()
-
-        if Chat.objects.filter(members=self.request.user).filter(members=friend).exists():
-            return redirect("chat:home")
-
+        friends = form.cleaned_data.get("friends_checkboxes")
         chat_instance = form.save(commit=False)
+        if len(friends) == 1:
+            chat_instance.is_group = False
+        else:
+            chat_instance.is_group = True
         chat_instance.save()
-        chat_instance.members.add(self.request.user)
 
-        if friend_id:
-            friend = get_object_or_404(User, id=friend_id)
-            chat_instance.members.add(friend)
-
+        all_members = list(friends) + [self.request.user]
+        existing_chat = Chat.objects.filter(members__in=all_members)
+        for chat in existing_chat:
+            if set(chat.members.all()) == set(all_members):
+                return self.form_invalid(form)
+        chat_instance.members.add(*friends, self.request.user)
         return super().form_valid(form)
 
 

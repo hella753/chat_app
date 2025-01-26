@@ -13,7 +13,7 @@
 
 {% block content %}
     {% include 'navbar.html' %}
-    {% include 'chat/modal.html' %}
+    {% include 'chat/modal.html' with friends=user.friends.all %}
     <div class="chat-container">
         <div class="display-chats">
             {% include "chat/components/chat-header.html" %}
@@ -21,17 +21,25 @@
         </div>
         <div class="messaging-space">
             <div class="friend-header">
-                {% with chat.members.all as members %}
-                    {% if members.0 == user %}
-                        {% with members.1 as other_user %}
-                            {% include "chat/components/conversation-header-card.html" with other_user=other_user %}
-                        {% endwith %}
-                    {% else %}
-                        {% with members.0 as other_user %}
-                            {% include "chat/components/conversation-header-card.html" with other_user=other_user %}
-                        {% endwith %}
-                    {% endif %}
-                {% endwith %}
+                {% if chat.is_group %}
+                    <img src="{% static 'images/group_chat.png' %}"
+                         class="friends-profile-picture"
+                         alt="{{ chat.name }}">
+                    <div class="friend-name-conv">{{ chat.name }}</div>
+                    <div class="circle-inactive" id="circle_{{ chat.members.all }}"></div>
+                {% else %}
+                    {% with chat.members.all as members %}
+                        {% if members.0 == user %}
+                            {% with members.1 as other_user %}
+                                {% include "chat/components/conversation-header-card.html" with other_user=other_user %}
+                            {% endwith %}
+                        {% else %}
+                            {% with members.0 as other_user %}
+                                {% include "chat/components/conversation-header-card.html" with other_user=other_user %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
             </div>
             <div id="chat-log">
                 {% for message in messages.all %}

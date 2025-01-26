@@ -5,14 +5,18 @@
     <a href="{% url "chat:conversation" chat.id %}">
         <div class="chat-info">
             {% with chat.members.all as members %}
-                {% if members.0 == user %}
-                    {% with members.1 as other_user %}
-                        {% include "chat/components/chat-card.html" with other_user=other_user chat=chat %}
-                    {% endwith %}
+                {% if chat.is_group %}
+                    {% include "chat/components/group-chat-card.html" with chat=chat %}
                 {% else %}
-                    {% with members.0 as other_user %}
-                        {% include "chat/components/chat-card.html" with other_user=other_user chat=chat %}
-                    {% endwith %}
+                    {% if members.0 == user %}
+                        {% with members.1 as other_user %}
+                            {% include "chat/components/chat-card.html" with other_user=other_user chat=chat %}
+                        {% endwith %}
+                    {% else %}
+                        {% with members.0 as other_user %}
+                            {% include "chat/components/chat-card.html" with other_user=other_user chat=chat %}
+                        {% endwith %}
+                    {% endif %}
                 {% endif %}
             {% endwith %}
             <div class="button-div">

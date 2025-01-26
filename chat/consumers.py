@@ -12,13 +12,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     """
     ChatConsumer handles WebSocket connections and messages.
     """
+
     async def connect(self):
         """
         Called when the websocket is handshaking as part of the connection process.
         """
-        self.conversation = self.scope["url_route"]["kwargs"]["conversation"] # Get chat id from URL
-        self.conv_group_name = f"chat_{self.conversation}" # Create a group
-        self.user = self.scope['user'] # Get user object
+        self.conversation = self.scope["url_route"]["kwargs"]["conversation"]  # Get chat id from URL
+        self.conv_group_name = f"chat_{self.conversation}"  # Create a group
+        self.user = self.scope['user']  # Get user object
 
         self.chat = await self.get_chat_instance()
 
@@ -33,7 +34,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         online_users = await self.get_online_users()
         event = {
             'type': 'online_users_handler',
-            'online_users': online_users
+            'online_users': online_users,
+            'chat_name': self.chat.name if self.chat.is_group else "Private Chat"
         }
         # Send online users to the group
         await self.channel_layer.group_send(self.conv_group_name, event)
@@ -55,7 +57,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             online_users = await self.get_online_users()
             event = {
                 'type': 'online_users_handler',
-                'online_users': online_users
+                'online_users': online_users,
+                'chat_name': self.chat.name if self.chat.is_group else "Private Chat"
             }
             # Send online users to the group
             await self.channel_layer.group_send(self.conv_group_name, event)
@@ -79,28 +82,48 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if message.strip() != '':
             recipients = await self.get_chat_members(self.conversation)
-            for recipient in recipients:
-                if recipient != user:
-                    # Send a message to a room group
-                    await self.channel_layer.group_send(
-                        self.conv_group_name,
-                        {
-                            'type': 'chat_message',
-                            'message': message,
-                            'username': user.username,
-                            'file': file,
-                            'recipient': recipient.username
-                        }
-                    )
+
+            recipients.remove(user)
+
+            if len(recipients) > 1:
+                await self.channel_layer.group_send(
+                    self.conv_group_name,
+                    {
+                        'type': 'chat_message',
+                        'message': message,
+                        'username': user.username,
+                        'file': file,
+                    }
+                )
+                for recipient in recipients:
                     await self.channel_layer.group_send(
                         f"user_{recipient.id}_notifications",
                         {
                             'type': 'notify',
                             'message': f"New Message!",
                             'recipient': recipient.username,
-                            'sender': self.user.username
+                            'sender': self.chat.name
                         }
                     )
+            else:
+                await self.channel_layer.group_send(
+                    self.conv_group_name,
+                    {
+                        'type': 'chat_message',
+                        'message': message,
+                        'username': user.username,
+                        'file': file,
+                    }
+                )
+                await self.channel_layer.group_send(
+                    f"user_{recipients[0].id}_notifications",
+                    {
+                        'type': 'notify',
+                        'message': f"New Message!",
+                        'recipient': recipients[0].username,
+                        'sender': self.user.username
+                    }
+                )
 
     async def chat_message(self, event):
         """
@@ -190,7 +213,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send a message to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'online_users',
-            'online_users': online_users
+            'online_users': online_users,
+            'chat_name': self.chat.name if self.chat.is_group else "Private Chat"
         }))
 
     @database_sync_to_async
@@ -241,6 +265,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     """
     NotificationConsumer handles WebSocket connections and messages.
     """
+
     async def connect(self):
         """
         Called when the websocket is handshaking as part of the connection process.
@@ -285,6 +310,7 @@ class FriendRequestsConsumer(AsyncWebsocketConsumer):
     """
     FriendRequestsConsumer handles WebSocket connections and messages.
     """
+
     async def connect(self):
         self.user = self.scope['user']
 

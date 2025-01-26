@@ -12,18 +12,29 @@
         <div>
             <h2>My Friends</h2>
             <ul>
-                {% for friend in friends %}
-                    <form method="POST" action="{% url "chat:create" %}">
+                <form method="POST" action="{% url "chat:create" %}">
+                    {% for friend in friends %}
                         {% csrf_token %}
                         <li>
-                            <button type="submit" class="friend-button">
-                                {{ friend.username }}
-                                <input type="hidden" name="friend" value="{{ friend.id }}">
-                            </button>
+                            <input
+                                    name=friends_checkboxes
+                                    type="checkbox"
+                                    id="friend-checkbox-{{ friend.username }}"
+                                    value="{{ friend.id }}"
+                            >
+                            <label for="friend-checkbox-{{ friend.username }}">{{ friend.username }}</label>
                         </li>
-                    </form>
+                    {% endfor %}
 
-                {% endfor %}
+                    <label for="chat_name_input" class="label-chat-name-input">For Group Messages Enter the Name</label>
+                    <input type="text" name="name" id="chat_name_input">
+
+                    <div class="friend-button-div">
+                        <button type="submit" class="friend-button">
+                            Start Chat
+                        </button>
+                    </div>
+                </form>
             </ul>
         </div>
 

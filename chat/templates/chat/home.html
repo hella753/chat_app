@@ -11,7 +11,7 @@
 
 {% block content %}
     {% include 'navbar.html' %}
-    {% include 'chat/modal.html' %}
+    {% include 'chat/modal.html' with friends=user.friends.all  %}
     <div class="chat-container">
         <div class="display-chats">
             {% include "chat/components/chat-header.html" %}

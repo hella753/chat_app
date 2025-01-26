@@ -139,7 +139,6 @@
     transform: scale(1.1);
 }
 
-
 .file-upload-status {
     width: 15px;
     height: 15px;
@@ -191,4 +190,35 @@ a:hover {
     justify-content: center;
     align-items: center;
     margin-right: 10px;
+}
+
+.friend-button-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.friend-button {
+    background-color: var(--pink);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    width: 140px;
+    padding: 10px 20px;
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+}
+
+.friend-button:hover {
+    background-color: var(--light-pink);
+    color: var(--light-green);
+}
+
+#chat_name_input {
+    margin-top: 10px;
+    background-color: var(--light-pink);
+    margin-left: 10px;
+    width: 120px;
+    padding: 5px;
+    border-radius: 5px;
 }

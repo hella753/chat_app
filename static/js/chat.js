@@ -17,6 +17,8 @@ chatSocket.onmessage = function (e) {
     const username = data.username;
     const message = data.message;
 
+    console.log(data);
+
     let fileContent = '';
     const file = data.file;
     if (file) {
@@ -49,15 +51,31 @@ chatSocket.onmessage = function (e) {
 
     if (data.type === 'online_users') {
         const onlineUsers = data.online_users;
+        const chatName = data.chat_name;
         const circles = document.querySelectorAll('[id^="circle_"]');
+
         circles.forEach(circle => {
-            const username = circle.id.replace('circle_', '');
-            if (onlineUsers.includes(username)) {
-                circle.classList.remove('circle-inactive');
-                circle.classList.add('circle-active');
+            if (circle.id.includes('QuerySet')) { // For group chats
+                const excludedCurrentUsername = onlineUsers.filter(
+                    username => username !== window.chatConfig.currentUserUsername
+                );
+                if (excludedCurrentUsername.length > 0) {
+                    circle.classList.remove('circle-inactive');
+                    circle.classList.add('circle-active');
+                } else {
+                    circle.classList.remove('circle-active');
+                    circle.classList.add('circle-inactive');
+                }
+
             } else {
-                circle.classList.remove('circle-active');
-                circle.classList.add('circle-inactive');
+                const username = circle.id.replace('circle_', '');
+                if (onlineUsers.includes(username)) {
+                    circle.classList.remove('circle-inactive');
+                    circle.classList.add('circle-active');
+                } else {
+                    circle.classList.remove('circle-active');
+                    circle.classList.add('circle-inactive');
+                }
             }
         });
     } // Handle online users
