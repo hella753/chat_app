@@ -61,10 +61,11 @@ class ChatCreationView(CreateView):
     form_class = ChatCreationForm
     template_name = "chat/home.html"
     success_url = reverse_lazy("chat:home")
+    context_object_name = "chats"
 
     def form_invalid(self, form):
         print(form.errors)
-        return super().form_invalid(form)
+        return redirect("chat:home")
 
     def form_valid(self, form):
         friends = form.cleaned_data.get("friends_checkboxes")
