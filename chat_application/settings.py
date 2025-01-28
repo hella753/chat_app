@@ -199,3 +199,4 @@ handler500 = "user.views.InternalServerError"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+WHITENOISE_ROOT = MEDIA_ROOT
