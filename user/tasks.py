@@ -5,7 +5,7 @@ from user.utils.activation_token_generator import account_activation_token
 from celery import shared_task
 
 
-# @shared_task
+@shared_task
 def send_verification_email(user_id, current_site_domain, email_address):
     """
     This function is used to send a verification email to a user.
