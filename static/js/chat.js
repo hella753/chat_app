@@ -2,7 +2,7 @@
 const conversationId = JSON.parse(document.getElementById('conversation').textContent);
 
 const chatSocket = new WebSocket(
-    'wss://'
+    'ws://'
     + window.location.host
     + '/ws/chat/'
     + conversationId

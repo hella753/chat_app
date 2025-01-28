@@ -1,5 +1,5 @@
 const friendRequestSocket = new WebSocket(
-    "wss://"
+    "ws://"
     + window.location.host
     + '/ws/friend_requests/'
 );
