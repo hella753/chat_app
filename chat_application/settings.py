@@ -28,16 +28,13 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ["chat-app-zunf.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["chat-app-zunf.onrender.com"]
 
 CSRF_TRUSTED_ORIGINS = ["https://chat-app-zunf.onrender.com"]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-
-if not os.path.exists('/tmp/media'):
-    os.makedirs('/tmp/media')
 
 # Application definition
 
@@ -167,7 +164,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/tmp/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
