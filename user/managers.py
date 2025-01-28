@@ -20,15 +20,18 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, username, first_name, last_name, email, password, **extra_fields):
+    def create_superuser(self, username, first_name, last_name, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
+        if not email:
+            raise ValueError('The Email field must be set')
+
         return self.create_user(
-            username,
-            first_name,
-            last_name,
-            email,
-            password,
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
             **extra_fields
         )

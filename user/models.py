@@ -39,6 +39,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     friend_requests = models.ManyToManyField('self', symmetrical=False, blank=True)
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
 
     objects = UserManager()
