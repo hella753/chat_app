@@ -1,0 +1,15 @@
+# Chat App
+
+tasks
+- [x] scroll bar for friends list in the modal window
+- [x] friends listing page
+- [x] friend adding functionality with acceptance and reject buttons
+- [x] notifications for new messages
+- [x] notifications for friend request
+- [x] make the new message button work on every page
+- **partialy_done** online status of friends
+- [x] upload files and pictures in the chat.
+- [x] delete friend functionality
+- [x] pagination
+- [x] group messages
+- [ ] read or not read the status of messages

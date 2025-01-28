@@ -1,0 +1,127 @@
+:root {
+    --pink: #FFCFCF;
+    --cream: #FFFDEC;
+    --light-green: #86A788;
+    --light-pink: #FFE2E2;
+    --dark-green: #4B5945;
+}
+
+body{
+    margin: 0;
+    background-color: floralwhite;
+    color: var(--pink);
+    font-family: Montserrat, sans-serif;
+}
+
+h1{
+    color: var(--pink);
+}
+
+h2{
+    margin-bottom: 10%;
+}
+
+.profile-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-bottom: 7%;
+}
+
+.profile-info{
+    margin: auto;
+    text-align: center;
+    background-color: var(--cream);
+    border-radius: 5%;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 2%;
+}
+
+.profile-picture{
+    border-radius: 50%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--dark-green);
+}
+
+a:hover {
+    color: var(--light-green);
+}
+
+.editing {
+    margin-bottom: 3%;
+}
+
+.btn{
+    width: 40%;
+    padding: 5%;
+    font-size: large;
+    margin: auto;
+    color: var(--cream);
+    background-color: var(--pink);
+    border: none;
+    border-radius: 10px;
+    font-family: Montserrat, sans-serif;
+}
+
+.button-div{
+    margin-top: 10%;
+}
+
+.btn:hover{
+    background-color: var(--light-green);
+    color: var(--cream);
+    cursor: pointer;
+}
+
+.update-profile-input {
+    width: 100%;
+    padding: 10px;
+    font-size: large;
+    color: var(--dark-green);
+    font-family: "Montserrat", sans-serif;
+    border: 1px solid floralwhite;
+    border-radius: 5px;
+    background-color: var(--light-pink);
+    box-sizing: border-box;
+}
+
+.update-container {
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.inline-element-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.edit-button {
+    margin-top: 7%;
+}
+
+.file-input {
+    width: 100%;
+    margin-top: 5%;
+    margin-left: 20%;
+}
+
+.container-file-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.go-back {
+    margin-right: 3%;
+}
+
+.error-message {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 220px;
+    color: var(--dark-green);
+}
