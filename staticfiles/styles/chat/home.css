@@ -1,0 +1,229 @@
+@import "../variables.css";
+
+body {
+    margin: 0;
+    background-color: floralwhite;
+}
+
+.chat-container {
+    height: 80vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    margin-bottom: 2%;
+    background-color: var(--cream);
+}
+
+.display-chats {
+    height: 80vh;
+    overflow-y: scroll;
+    background-color: var(--cream);
+    width: 70vh;
+}
+
+.messaging-space {
+    justify-content: space-between;
+    background-color: floralwhite;
+}
+
+
+.chat-nav {
+    background-color: var(--light-green);
+    margin: 0;
+    padding: 10px;
+}
+
+
+.no-message {
+    font-family: "Montserrat", sans-serif;
+    font-size: large;
+    color: var(--dark-green);
+    text-align: center;
+    margin-top: 10%;
+}
+
+.btn-start-chat {
+    width: 35%;
+    padding: 20px;
+    font-size: large;
+    margin: auto;
+    color: var(--cream);
+    background-color: var(--light-green);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-start-chat:hover {
+    background-color: var(--cream);
+    color: var(--dark-green);
+}
+
+.chat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--light-green);
+    background-color: var(--cream);
+}
+
+.friends-profile-picture {
+    border-radius: 50%;
+    background: none;
+    border: none;
+    width: 70px;
+    height: 70px;
+}
+
+.chat-info {
+    display: flex;
+}
+
+.friend-name {
+    font-family: "Montserrat", sans-serif;
+    font-size: large;
+    color: var(--dark-green);
+    margin-left: 10px;
+}
+
+.friend-last-message {
+    font-family: "Montserrat", sans-serif;
+    font-size: medium;
+    color: var(--dark-green);
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.friend-name:hover {
+    color: var(--light-green);
+}
+
+a {
+    text-decoration: none;
+}
+
+#new--modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--dark-green);
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    font-family: "Montserrat", sans-serif;
+
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 60vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    overflow-y: auto;
+}
+
+.close {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    right: 20px;
+    top: 20px;
+    color: var(--dark-green);
+    margin-left: 350px;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    max-height: calc(60vh - 200px);
+    overflow-y: auto;
+    list-style-type: none;
+}
+
+li {
+    list-style-type: none;
+    margin: 10px 0;
+    text-align: start;
+}
+
+.friend-button {
+    background: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: large;
+    color: var(--dark-green);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+.friend-button:hover {
+    color: var(--light-green);
+}
+
+#search {
+    background-color: var(--light-pink);
+    margin-left: 10px;
+    width: 120px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.delete-img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.delete-img:hover {
+    filter: invert(0.5);
+}
+
+.chat-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: end;
+}
+
+.friend-button-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.friend-button {
+    background-color: var(--pink);
+    color: white;
+    border: none;
+    width: 140px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+}
+
+.friend-button:hover {
+    background-color: var(--light-pink);
+    color: var(--light-green);
+}
+
+#chat_name_input {
+    margin-top: 10px;
+    background-color: var(--light-pink);
+    margin-left: 10px;
+    width: 120px;
+    padding: 5px;
+    border-radius: 5px;
+}

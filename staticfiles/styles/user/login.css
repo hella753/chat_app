@@ -1,0 +1,90 @@
+@import '../variables.css';
+
+h1 {
+    color: var(--pink);
+}
+
+body{
+    background-color: floralwhite;
+    font-family: Montserrat, sans-serif;
+    color: var(--light-green);
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login{
+    width: 20%;
+    margin: auto;
+    background-color: var(--cream);
+    border-radius: 5%;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 3%;
+}
+
+.form-element{
+    margin: 3%;
+    font-size: large;
+    display: flex;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: large;
+    color: var(--dark-green);
+    font-family: "Montserrat", sans-serif;
+    border: 1px solid floralwhite;
+    border-radius: 5px;
+    background-color: var(--light-pink);
+    box-sizing: border-box;
+}
+button{
+    width: 90%;
+    padding: 5%;
+    font-size: large;
+    margin: auto;
+    color: var(--cream);
+    background-color: var(--pink);
+    border: none;
+    border-radius: 5px;
+    font-family: Montserrat, sans-serif;
+}
+
+.button-div{
+    margin-top: 10%;
+}
+
+.btn:hover{
+    background-color: var(--light-green);
+    color: var(--cream);
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: var(--light-green);
+}
+
+a:hover {
+    color: var(--dark-green);
+}
+
+.error-message {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    color: var(--dark-green);
+}
+
+.logout-div {
+    display: flex;
+}
+
+.register-info {
+    margin-top: 10%;
+    color: var(--light-green);
+}

@@ -1,0 +1,59 @@
+@import "../variables.css";
+
+.friends-friend-profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.friends-ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 20px;
+    min-height: 70vh;
+}
+
+.friend {
+    padding: 20px;
+    text-align: center;
+    list-style: none;
+    transition: transform 0.5s ease-in-out;
+}
+
+.friend:hover {
+    transform: scale(1.1);
+}
+
+.username-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--dark-green);
+}
+
+.friends-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--dark-green);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.img-delete {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: none;
+    margin-left: 300px;
+    margin-top: 0;
+    transition: transform 0.5s ease-in-out;
+}
+
+.img-delete:hover {
+    transform: scale(1.1);
+}
+
+.delete-friend-button {
+    background: none;
+    border: none;
+}
