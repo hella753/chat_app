@@ -1,91 +1,95 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Welcome Email</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
 
-    .email-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: floralwhite;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-    }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: floralwhite;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
 
-    .header {
-        background-color: #FFCFCF;
-        color: #FFFDEC;
-        padding: 15px;
-        text-align: center;
-        border-radius: 8px 8px 0 0;
-    }
+        .header {
+            background-color: #FFCFCF;
+            color: #FFFDEC;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
 
-    .header h1 {
-        margin: 0;
-        font-size: 24px;
-    }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
 
-    .content {
-        padding: 20px;
-        text-align: left;
-    }
+        .content {
+            padding: 20px;
+            text-align: left;
+        }
 
-    .content p {
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
 
-    .button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #FFCFCF;
-        color: #FFFDEC;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-    }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #FFCFCF;
+            color: #FFFDEC;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
 
-    .button:hover {
-        background-color: #86A788;
-    }
+        .button:hover {
+            background-color: #86A788;
+        }
 
-    .footer {
-        margin-top: 20px;
-        font-size: 12px;
-        text-align: center;
-        color: #777;
-    }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
 
-    a {
-        color: #FFFDEC;
-        text-decoration: none;
-    }
-</style>
+        a {
+            color: #FFFDEC;
+            text-decoration: none;
+        }
+    </style>
+</head>
 <body>
-<div class="email-container">
-    <div class="header">
-        <h1>Welcome to Our Platform!</h1>
+    <div class="email-container">
+        <div class="header">
+            <h1>Welcome to Our Platform!</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ user.first_name }},</p>
+            <p>Thank you for signing up! To complete your registration, please verify your email address by clicking the button below:</p>
+            <p style="text-align: center;">
+                <a href="http://{{ domain }}/accounts/activate/{{ uid }}/{{ token }}/" class="button">Activate Account</a>
+            </p>
+            <p>If you didn’t sign up for this account, you can safely ignore this email.</p>
+            <p>Best regards,<br>The Team</p>
+        </div>
+        <div class="footer">
+            <p>© 2025 ChatApp. All rights reserved.</p>
+        </div>
     </div>
-    <div class="content">
-        <p>Hello {{ user.first_name }},</p>
-        <p>Thank you for signing up! To complete your registration, please verify your email address by clicking the
-            button below:</p>
-        <p style="text-align: center;">
-            <a href="http://{{ domain }}/accounts/activate/{{ uid }}/{{ token }}/" class="button">Activate Account</a>
-        </p>
-        <p>If you didn’t sign up for this account, you can safely ignore this email.</p>
-        <p>Best regards,<br>The Team</p>
-    </div>
-    <div class="footer">
-        <p>© 2025 ChatApp. All rights reserved.</p>
-    </div>
-</div>
 </body>
 </html>

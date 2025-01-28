@@ -7,3 +7,5 @@ chat_application/__pycache__/
 .idea/
 chat/__pycache__/
 chat/migrations/__pycache__/
+db.sqlite3
+media/

@@ -11,4 +11,4 @@ def send_notification_signal(sender, instance, created, **kwargs):
     from chat.tasks import send_notification
     if created:
         user_id = instance.chat.members.exclude(id=instance.author.id).first().id
-        send_notification.send(user_id, "You have a new message!")
+        send_notification.delay(user_id, "You have a new message!")
