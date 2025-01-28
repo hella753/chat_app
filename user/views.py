@@ -42,7 +42,7 @@ class RegisterView(CreateView):
         current_site = get_current_site(self.request)
         current_site_domain = current_site.domain
         email_address = form.cleaned_data.get('email')
-        send_verification_email.delay(user.id, current_site_domain, email_address)
+        send_verification_email(user.id, current_site_domain, email_address)
         return redirect(self.success_url)
 
 
@@ -161,7 +161,7 @@ class AddFriendRequestView(View):
             friend = User.objects.get(username=username)
             friend.friend_requests.add(request.user)
             request.user.friend_requests.remove(friend)
-            send_notification.delay(friend.id, f"New friend request!")
+            send_notification(friend.id, f"New friend request!")
 
 
         except User.DoesNotExist:
@@ -183,7 +183,7 @@ class AcceptFriendRequestView(View):
             friend = User.objects.get(username=username)
             user.friends.add(friend)
             user.friend_requests.remove(friend)
-            send_notification.delay(friend.id, f"Accepted your friend request!")
+            send_notification(friend.id, f"Accepted your friend request!")
         except User.DoesNotExist:
             return redirect(self.success_url)
         return redirect(self.success_url)
