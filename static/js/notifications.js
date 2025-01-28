@@ -1,5 +1,5 @@
 const notificationSocket = new WebSocket(
-    "ws://"
+    "wss://"
     + window.location.host
     + '/ws/notifications/'
 );
