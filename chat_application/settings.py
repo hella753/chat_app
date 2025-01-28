@@ -28,8 +28,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = ["chat-app-zunf.onrender.com"]
 
+CSRF_TRUSTED_ORIGINS = ["chat-app-zunf.onrender.com"]
 
 # Application definition
 
@@ -98,7 +99,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [(os.getenv("REDIS_URL"))],
         },
     },
 }
